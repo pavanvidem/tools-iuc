@@ -18,10 +18,10 @@
     @REFGENOMEHANDLING@
 
     ## Supports Drop-seq, 10X Chromium, inDrop and Smart-Seq
-    --soloType $sc.solo_type
 
-    #if str($sc.solo_type) == "CB_UMI_Simple":
+    #if str($sc.platform) == "10x":
     @READSHANDLING@
+    --soloType 'CB_UMI_Simple'
     #if $sc.soloCBwhitelist:
         --soloCBwhitelist '$sc.soloCBwhitelist'
     #else
@@ -58,8 +58,9 @@
     --clipAdapterType $sc.params.clipAdapterType
     #end if
 
-    #elif str($sc.solo_type) == "CB_UMI_Complex":
+    #elif str($sc.platform) == "indrop":
     @READSHANDLING@
+    --soloType 'CB_UMI_Complex'
     ## inDrop supports multiple cell barcodes of varying length
         #set $cb_whitelist = []
         #set $cb_pos = []
@@ -77,7 +78,7 @@
     --soloAdapterMismatchesNmax $sc.soloAdapterMismatchesNmax
     --clipAdapterType $sc.clipAdapterType
 
-    #elif str($sc.solo_type) == "SmartSeq":
+    #elif str($sc.platform) == "SmartSeq":
     ## Create a manifest file with fastq files and their corresponding cell-ids
     ## For Smart-Seq [R1] is followed by [R2]
     --readFilesManifest '$manifest_file'
@@ -172,7 +173,7 @@
     ]]></command>
     <configfiles>
         <configfile name="manifest_file" >
-    #if str($sc.solo_type) == "SmartSeq":
+    #if str($sc.platform) == "SmartSeq":
         #set $cellids_fh = open(str($sc.cell_ids), 'r')
         #set $cellids = [str(x.strip()) for x in $cellids_fh.readlines()]
         #silent $cellids_fh.close()
@@ -222,12 +223,12 @@
             </when>
         </conditional>
         <conditional name="sc" >
-            <param name="solo_type" type="select" label="Type of single-cell RNA-seq" >
-                <option value="CB_UMI_Simple">Drop-seq or 10X Chromium</option>
-                <option value="CB_UMI_Complex">inDrop</option>
+            <param name="platform" type="select" label="Type of single-cell RNA-seq" >
+                <option value="10x">Drop-seq or 10X Chromium</option>
+                <option value="indrop">inDrop</option>
                 <option value="SmartSeq">Smart-Seq</option>
             </param>
-            <when value="CB_UMI_Simple">
+            <when value="10x">
                 <expand macro="input_selection" />
                 <param format="txt,tsv" argument="--soloCBwhitelist" optional="True" type="data" label="RNA-Seq Cell Barcode Whitelist"/>
                 <conditional name="params" >
@@ -286,7 +287,7 @@
                     <expand macro="cb_match_wl_cellranger" />
                 </param>
             </when>
-            <when value="CB_UMI_Complex">
+            <when value="indrop">
                 <expand macro="input_selection" />
                 <repeat name="cb_whitelists" title="Cell barcode whitelist information" max="2" >
                     <param name="whitelist_file" format="txt,tsv" type="data" label="RNA-Seq Cell Barcode Whitelist"/>
@@ -516,7 +517,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -590,7 +591,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -655,7 +656,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz,pbmc_1k_v2_L001.R1.10k.fastq.gz,pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -697,7 +698,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="list_paired" />
                     <param name="input_collection" >
@@ -746,7 +747,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -827,7 +828,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -899,7 +900,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Complex" />
+                <param name="platform" value="indrop" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="indrop.R1.fastq.gz" ftype="fastqsanger.gz" />
@@ -971,7 +972,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="SmartSeq" />
+                <param name="platform" value="SmartSeq" />
                 <conditional name="input_types_smart_seq">
                     <param name="use" value="list_paired_end" />
                     <param name="paired_end_collection" >
@@ -1084,7 +1085,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1151,7 +1152,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1210,7 +1211,7 @@
                 </conditional>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1280,7 +1281,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1345,7 +1346,7 @@
                 <param name="sjdbGTFfeatureExon" value="fakexon"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1407,7 +1408,7 @@
                 <param name="sjdbGTFfile" value="filtered3.Homo_sapiens.GRCh38.100.chr21.gtf" ftype="gtf"/>
             </conditional>
             <conditional name="sc" >
-                <param name="solo_type" value="CB_UMI_Simple" />
+                <param name="platform" value="10x" />
                 <conditional name="input_types">
                     <param name="use" value="repeat" />
                     <param name="input1" value="pbmc_1k_v2_L001.R1.10k.fastq.gz" ftype="fastqsanger.gz" />
@@ -1437,8 +1438,6 @@
                 <conditional name="params">
                     <param name="settingsType" value="full" />
                     <section name="seed">
-                        <param name="seed_select" value="yes" />
-                        <param name="seedSearchStartLmax" value="25" />
                         <param name="seedSearchStartLmax" value="25" />
                     </section>
                     <section name="align">
