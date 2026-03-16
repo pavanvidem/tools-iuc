@@ -9,7 +9,6 @@
         <requirement type="package" version="@TOOL_VERSION@">pretextmap</requirement>
         <requirement type="package" version="1.23">samtools</requirement>
     </requirements>
-    <version_command>PretextMap --version</version_command>
     <command detect_errors="exit_code"><![CDATA[
         #if $input.is_of_type("bam"):
             samtools view -h '${input}' |
