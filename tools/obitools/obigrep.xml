@@ -28,7 +28,7 @@
         </repeat>
         <param name="v" type="boolean" truevalue="-v" falsevalue="" checked="false" label="Invert the sequence record selection (option -v)"/>
         <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro"/>
+        <expand macro="input_format_options_macro_OBI4"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
@@ -118,6 +118,8 @@ Sequence record selection options :
 * maxcount     : Keeps sequence records whose sequence count is equal or shorter than lmax. ex : 50
 
 * mincount     : Selects sequence records whose sequence count is equal or longer than lmin. ex : 5
+
+@OBITOOLS4_IMAGE@
 
 @OBITOOLS_LINK_OBI4@
 

@@ -129,7 +129,7 @@
         </repeat>
 
         <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro"/>
+        <expand macro="input_format_options_macro_OBI4"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
@@ -201,6 +201,8 @@
 `obiannotate` is the command that allows adding/modifying/removing annotation attributes attached to sequence records.
 
 Once such attributes are added, they can be used by the other OBITools commands for filtering purposes or for statistics computing.
+
+@OBITOOLS4_IMAGE@
 
 @OBITOOLS_LINK_OBI4@
 

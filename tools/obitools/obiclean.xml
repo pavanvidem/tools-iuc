@@ -56,7 +56,7 @@
             <param name="min_eval_rate" type="integer" optional="true" value="1000" label="the minimum abundance of the destination sequence of an edge to be stored in the CSV file produced by the --save-ratio option." />
         </section>
         <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro"/>
+        <expand macro="input_format_options_macro_OBI4"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
