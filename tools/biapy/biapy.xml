@@ -275,6 +275,10 @@
                     ## Detection
                     elif [ -d "output/my_experiment/results/my_experiment_1/per_image_local_max_check_post_proc" ]; then
                         mv output/my_experiment/results/my_experiment_1/per_image_local_max_check_post_proc/* post_proc/;
+
+                    ## 2D images as 3D stack
+                    elif [ -d "output/my_experiment/results/my_experiment_1/as_3d_stack" ]; then
+                        mv output/my_experiment/results/my_experiment_1/as_3d_stack/* post_proc/;
                     fi;
                 }
             #end if
