@@ -227,6 +227,13 @@ def main():
     else:
         test_cfg["ENABLE"] = False
 
+    # Double-check MODEL configuration for checkpoint loading
+    model_cfg = config.setdefault("MODEL", {})
+    is_loading = bool(args.model)
+    model_cfg["LOAD_CHECKPOINT"] = is_loading
+    model_cfg["LOAD_MODEL_FROM_CHECKPOINT"] = is_loading
+    if is_loading:
+        config.setdefault("PATHS", {})["CHECKPOINT_FILE"] = args.model
     config.setdefault("MODEL", {})["OUT_CHECKPOINT_FORMAT"] = "safetensors"
 
     # Final cleanup and save
