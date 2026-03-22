@@ -74,15 +74,15 @@ Examples
 A collection with three elements::
 
  Collection:
-   e1  →  dataset1.fastq
-   e2  →  dataset2.fastq
-   e3  →  dataset3.fastq
+   sample_A  →  dataset1.fastq
+   sample_B  →  dataset2.fastq
+   sample_C  →  dataset3.fastq
 
 Output::
 
- e1
- e2
- e3
+ sample_A
+ sample_B
+ sample_C
 
 -------
 
