@@ -104,7 +104,7 @@
                 <param name="annotations" value="schema_seed_annotations.tsv"/>
             </section>
             <section name="output">
-                <param name="output_selector" value="cgMLST_MSA,cgMLST_profiles,distance_matrix_symmetric,masked_profiles,presence_absence"/>
+                <param name="output_selector" value="cgMLST_MSA.fasta,cgMLST_profiles.tsv,distance_matrix_symmetric.tsv,masked_profiles.tsv,presence_absence.tsv"/>
             </section>
             <output name="html_file" file="allelecallevaluator_report_annotate.html" ftype="html">
                 <assert_contents>
