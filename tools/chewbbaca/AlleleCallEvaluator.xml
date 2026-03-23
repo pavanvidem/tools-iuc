@@ -1,4 +1,4 @@
-<tool id="chewbbaca_allelecallevaluator" name="chewBBACA AlleleCallEvaluator" version="@CHEW_VERSION@+galaxy@VERSION_SUFFIX@" profile="@PROFILE@">
+<tool id="chewbbaca_allelecallevaluator" name="chewBBACA AlleleCallEvaluator" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="@PROFILE@">
     <description>Build an interactive report for allele calling results evaluation</description>
     <macros>
         <import>macros.xml</import>
@@ -75,7 +75,9 @@
                 </collection>
             </param>
             <param name="input_schema" value="schema.zip"/>
-            <param name="annotations" value="schema_seed_annotations.tsv"/>
+            <section name="advanced">
+                <param name="annotations" value="schema_seed_annotations.tsv"/>
+            </section>
             <output name="html_file" file="allelecallevaluator_report_annotate.html" ftype="html">
                 <assert_contents>
                     <has_text_matching expression="&quot;annotations&quot;"/>
