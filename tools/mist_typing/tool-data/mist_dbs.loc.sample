@@ -3,6 +3,7 @@
 # Column 1: Scheme name (as displayed in Galaxy)
 # Column 1: Scheme id
 # Column 2: Path to the corresponding indexed MiST database
+# Column 3: Database version or timestamp
 #
 # To create and index a scheme, follow the instructions:
 # - Downloading schemes:
@@ -16,4 +17,4 @@
 # - One directory per locus in the scheme
 #
 # Example entry
-# Escherichia coli      MLST    ecoli_mlst /path/to/mist_index/
+# Escherichia coli	MLST	ecoli_mlst	/path/to/mist_index/	2026-01-01
