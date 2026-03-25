@@ -29,7 +29,9 @@
         <section name="section_input" title="Input" expanded="true">
             <param argument="--fasta" type="data" format="fasta" label="Input FASTA file"/>
             <param argument="--db" type="select" label="(cg)MLST scheme">
-                <options from_data_table="mist_dbs"/>
+                <options from_data_table="mist_dbs">
+                    <filter type="regexp" column="version" value="@COMPATIBLE_DB_VERSIONS@"/>
+                </options>
             </param>
         </section>
 

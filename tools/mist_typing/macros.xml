@@ -13,4 +13,5 @@
         </citations>
         <yield/>
     </xml>
+    <token name="@COMPATIBLE_DB_VERSIONS@">^1\..*</token>
 </macros>
