@@ -1,7 +1,0 @@
-<macros>
-    <token name="@DIAGRAM@"><![CDATA[
-.. image:: $PATH_TO_IMAGES/extract_identifiers.png
-  :alt: Extract element identifiers from a collection into a text file
-  :width: 580
-    ]]></token>
-</macros>
