@@ -150,7 +150,7 @@ sc.pp.highly_variable_genes(
     subset=$method.subset,
     @CMD_PARAM_LAYER@
     #if $method.batch_key != ''
-    layer='$method.batch_key',
+    batch_key='$method.batch_key',
     #end if
     inplace=True)
 
