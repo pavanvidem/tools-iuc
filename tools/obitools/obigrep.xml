@@ -1,11 +1,11 @@
-<tool id="obi_grep" name="obigrep" version="@TOOL_VERSION_OBI4@" profile="@PROFILE_OBI4@">
+<tool id="obi_grep" name="obigrep" version="@TOOL_VERSION@" profile="@PROFILE@">
     <description>
         Filters sequence file
     </description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements_obi4"/>
+    <expand macro="requirements"/>
     <expand macro="stdio"/>
     <command><![CDATA[
         obigrep
@@ -14,29 +14,28 @@
         #for $i in $repeat_obigrep
             @OPTIONS_OBIGREP@
         #end for
-        $compress_bool
-        @INPUT_FORMAT_OBI4@
+        @INPUT_FORMAT@
         @OUT_FORMAT@
         $input
-        >'$output'
-        @GENERATE_GALAXY_JSON_OBI4@
+        > $output
     ]]></command>
     <inputs>
-        <param name="input" type="data" format="@INPUT_FORMATS_OBI4@"/>
+        <param name="input" type="data" format="@INPUT_FORMATS@"/>
         <repeat name="repeat_obigrep" title="filter parameter" min="1">
             <expand macro="option_grep_macro"/>
         </repeat>
         <param name="v" type="boolean" truevalue="-v" falsevalue="" checked="false" label="Invert the sequence record selection (option -v)"/>
-        <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro_OBI4"/>
+        <expand macro="input_format_options_macro"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
-        <data format="auto" name="output"/>
+        <data name="output" format_source="input">
+            <expand macro="change_format_macro"/>
+        </data>
     </outputs>
     <tests>
         <test expect_num_outputs="1">
-            <param name="input" value="output_obipairing.fastq" ftype="fastqsolexa"/>
+            <param name="input" value="output_obipairing.fastqsanger" ftype="fastqsanger"/>
             <repeat name="repeat_obigrep">
                 <conditional name="options_grep">
                     <param name="options_grep_selector" value="lmin"/>
@@ -44,11 +43,10 @@
                 </conditional>
             </repeat>
                 <param name="v" value="true"/>
-                <param name="out_format" value="fastq"/>
-                <output name="output" file="output_obigrep_lmin.fastq" ftype="fastq"/>  
+                <output name="output" file="output_obigrep_lmin.fastqsanger" ftype="fastqsanger"/>  
         </test>
         <test expect_num_outputs="1">
-            <param name="input" value="output_obipairing_compress.fastq.gz" ftype="fastqsolexa.gz"/>
+            <param name="input" value="output_obipairing_compress.fastqsolexa.gz" ftype="fastqsolexa.gz"/>
             <repeat name="repeat_obigrep">
                 <conditional name="options_grep">
                     <param name="options_grep_selector" value="predicat"/>
@@ -56,15 +54,11 @@
                 </conditional>
             </repeat>
             <param name="v" value="false"/>
-            <param name="compress_bool" value="true"/>
-            <param name="out_format" value="fasta"/>
+            <param name="out_format" value="fasta.gz"/>
             <output name="output" file="output_obigrep_predicat.fasta.gz" ftype="fasta.gz" decompress="true"/>
-            <assert_command>
-                <has_text text="--solexa"/>
-            </assert_command>
         </test>
         <test>
-            <param name="input" value="input_obigrep_test.fasta" ftype="fasta"/>
+            <param name="input" value="output_obiuniq.fasta" ftype="fasta"/>
             <repeat name="repeat_obigrep">
                 <conditional name="options_grep">
                     <param name="options_grep_selector" value="mincount"/>
@@ -74,13 +68,11 @@
             <repeat name="repeat_obigrep">
                 <conditional name="options_grep">
                     <param name="options_grep_selector" value="attribute"/>
-                    <param name="attribute" value="merged_sample"/>
-                    <param name="marker" value="COI"/>
+                    <param name="attribute" value='merged_sample="26a_F040644"'/>
                 </conditional>
             </repeat>
             <param name="v" value="false"/>
-            <param name="out_format" value="fasta"/>
-            <output name="output" file="output_obigrep_mincount_marker.fasta" ftype="fasta"/>
+            <output name="output" file="output_obigrep_mincount_attrib.fasta" ftype="fasta"/>
         </test>
     </tests>
     <help>

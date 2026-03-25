@@ -1,11 +1,11 @@
-<tool id="obi_pairing" name="obipairing" version="@TOOL_VERSION_OBI4@" profile="@PROFILE_OBI4@">
+<tool id="obi_pairing" name="obipairing" version="@TOOL_VERSION@" profile="@PROFILE@">
     <description>
         When DNA metabarcoding sequences are generated as paired reads on the Illumina platform, obipairing aims to align forward and reverse reads to generate full length amplicon sequences.
     </description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements_obi4"/>
+    <expand macro="requirements"/>
     <expand macro="stdio"/>
     <command>
         <![CDATA[
@@ -25,8 +25,7 @@
         --min-identity='$min_ident'
         --min-overlap='$min_overlap'
 
-        $compress_bool
-
+        ${compress_bool}
         -R fastq5p.fastq
         -F fastq3p.fastq
         > '$output'
@@ -34,40 +33,35 @@
         ]]>
     </command>
     <inputs>
-        <param name="inputfastq" format="fastq,fastq" type="data_collection" collection_type="paired" label="Paired reads" help="file of 3p and 5p Illumina pair-end reads to assemble in sanger fastq nucleic format (standard fastq)"/>
+        <param name="inputfastq" format="fastqsanger,fastqsanger.gz,fastqsolexa,fastqsolexa.gz" type="data_collection" collection_type="paired" label="Paired reads" help="file of 3p and 5p Illumina pair-end reads to assemble in fastq (sanger or solexa) nucleic format"/>
         <param name="min_ident" type="float" value="0.8" label="minimum score for keeping aligment"/>
-        <param name="min_overlap" type="integer" value="10" label="minimum overlap, all the reads shorter than this value will be concatenated instead of aligned."/>
+        <param name="min_overlap" type="integer" value="10" label="minimum overlap, all the reads shorter than this value will be concatenated instead of aligned"/>
         <expand macro="compress_bool_macro"/>
     </inputs>
     <outputs>
-        <data name="output" format="fastq">
-            <change_format>
-                <when input="compress_bool" value="--compressed" format="fastq.gz"/>
-            </change_format>
-        </data>
+        <data name="output" format_source="inputfastq"/>
     </outputs>
     <tests>
         <test expect_num_outputs="1">
             <param name="inputfastq">
                 <collection type="paired">
-                    <element name="forward" value="wolf_small_F.fastq" ftype="fastq"/>
-                    <element name="reverse" value="wolf_small_R.fastq" ftype="fastq"/>
+                    <element name="forward" value="wolf_small.F.fastqsanger" ftype="fastqsanger"/>
+                    <element name="reverse" value="wolf_small.R.fastqsanger" ftype="fastqsanger"/>
                 </collection>
             </param>
             <param name="min_ident" value="0.8"/>
             <param name="min_overlap" value="10"/>
-            <param name="compress_bool" value="false"/>
-            <output name="output" file="output_obipairing.fastq" ftype="fastq"/>
+            <output name="output" file="output_obipairing.fastqsanger" ftype="fastqsanger"/>
         </test>
         <test expect_num_outputs="1">
             <param name="inputfastq">
                 <collection type="paired">
-                    <element name="forward" value="wolf_small_F.fastq.gz" ftype="fastq.gz"/>
-                    <element name="reverse" value="wolf_small_R.fastq.gz" ftype="fastq.gz"/>
+                    <element name="forward" value="wolf_small.F.fastqsolexa.gz" ftype="fastqsolexa.gz"/>
+                    <element name="reverse" value="wolf_small.R.fastqsolexa.gz" ftype="fastqsolexa.gz"/>
                 </collection>
             </param>
             <param name="compress_bool" value="true"/>
-            <output name="output" file="output_obipairing_compress.fastq.gz" ftype="fastq.gz" decompress="true"/>
+            <output name="output" file="output_obipairing_compress.fastqsolexa.gz" ftype="fastqsolexa.gz" decompress="true"/>
         </test>
     </tests>
     <help>

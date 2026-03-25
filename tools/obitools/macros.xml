@@ -2,16 +2,12 @@
 <macros>
     <xml name="requirements">
         <requirements>
-            <requirement type="package" version="@TOOL_VERSION@">obitools</requirement>
+            <requirement type="package" version="@TOOL_VERSION@">obitools4</requirement>
         </requirements>
     </xml>
-    <xml name="bio_tools">
-        <xrefs>
-            <xref type="bio.tools">obitools</xref>
-        </xrefs>
-    </xml>
-    <token name="@TOOL_VERSION@">1.2.13</token>
-    <token name="@PROFILE@">21.01</token>
+
+    <token name="@TOOL_VERSION@">4.4.0</token>
+    <token name="@PROFILE@">25.1</token>
 
     <xml name="stdio">
         <stdio>
@@ -19,161 +15,79 @@
         </stdio>
     </xml>
 
-    <xml name="requirements_obi4">
-        <requirements>
-            <requirement type="package" version="@TOOL_VERSION_OBI4@">obitools4</requirement>
-        </requirements>
-    </xml>
-
-    <token name="@TOOL_VERSION_OBI4@">4.4.0</token>
-    <token name="@PROFILE_OBI4@">25.1</token>
-
     <token name="@INPUT_FORMATS@">fastqsanger,fastqsanger.gz,fastqsolexa,fastqsolexa.gz,fasta,fasta.gz</token>
-    <token name="@INPUT_FORMATS_OBI4@">fastq,fastq.gz,fastqsolexa,fastqsolexa.gz,fasta,fasta.gz</token>
+    
     <token name="@OPTIONS_OBIGREP@"><![CDATA[
-        #for $i in $repeat_obigrep
             #if str($i.options_grep.options_grep_selector) == 'sequence'
-                -s ${i.options_grep.sequence}
-            #else if str($i.options_grep.options_grep_selector) == 'definition'
-                -D ${i.options_grep.definition}
-            #else if str($i.options_grep.options_grep_selector) == 'identifier'
-                -I ${i.options_grep.identifier}
-            #else if str($i.options_grep.options_grep_selector) == 'idlist'
+                -s '${i.options_grep.sequence}'
+            #elif str($i.options_grep.options_grep_selector) == 'definition'
+                -D '${i.options_grep.definition}'
+            #elif str($i.options_grep.options_grep_selector) == 'identifier'
+                -I '${i.options_grep.identifier}'
+            #elif str($i.options_grep.options_grep_selector) == 'idlist'
                 --id-list ${i.options_grep.idlist}
-            #else if str($i.options_grep.options_grep_selector) == 'attribute'
+            #elif str($i.options_grep.options_grep_selector) == 'attribute'
                 #if $i.options_grep.marker == 'None'
-                    -a '${i.options_grep.attribute}'
+                    -a ${i.options_grep.attribute}
                 #else 
-                    -a '${i.options_grep.attribute}'='${i.options_grep.marker}'
+                    -a ${i.options_grep.attribute}=${i.options_grep.marker}
                 #end if
-            #else if str($i.options_grep.options_grep_selector) == 'hasattribute'
-                -A ${i.options_grep.hasattribute}
-            #else if str($i.options_grep.options_grep_selector) == 'predicat'
-                -p ${i.options_grep.predicat}
-            #else if str($i.options_grep.options_grep_selector) == 'lmax'
+            #elif str($i.options_grep.options_grep_selector) == 'hasattribute'
+                -A '${i.options_grep.hasattribute}'
+            #elif str($i.options_grep.options_grep_selector) == 'predicat'
+                -p '${i.options_grep.predicat}'
+            #elif str($i.options_grep.options_grep_selector) == 'lmax'
                 -L ${i.options_grep.lmax}
-            #else if str($i.options_grep.options_grep_selector) == 'lmin'
+            #elif str($i.options_grep.options_grep_selector) == 'lmin'
                 -l ${i.options_grep.lmin}
-            #else if str($i.options_grep.options_grep_selector) == 'maxcount'
+            #elif str($i.options_grep.options_grep_selector) == 'maxcount'
                 -C ${i.options_grep.maxcount}
-            #else if str($i.options_grep.options_grep_selector) == 'mincount'
+            #elif str($i.options_grep.options_grep_selector) == 'mincount'
                 -c ${i.options_grep.mincount}
             #end if
-        #end for
     ]]></token>
 
-    <token name="@GUNZIP_INPUT@"><![CDATA[
-        #if $input.ext.endswith(".gz")
-            gunzip -c '$input' > input &&
-        #else
-            ln -s '$input' input &&
-        #end if
-    ]]></token>
-    <token name="@GZIP_OUTPUT@"><![CDATA[
-        #if $input.ext.endswith(".gz")
-            | gzip -c 
-        #end if
-    ]]></token>
-
-    <xml name="compress_bool_macro">
-        <param name="compress_bool" type="boolean" checked="false" truevalue="--compressed" falsevalue="" label="Do you want to compress the output file ?" />
+    <xml name="taxo_macro">
+        <param name="taxonomy" type="data" format="tgz,tar.gz,tar" label="Taxonomic database" optional="true"/>
     </xml>
 
-    <!-- generate galaxy.json to determine output format
-        - by default same as input
-        - if out_format can be specified 
-          - fasta/fastq depending on $out_format (if != "")
-          - or fasta if the tool does not support choosing the output format, e.g. obiuniq which always outputs fasta
-        - gz if $input is zipped 
-    
-        A list of outputs to include in the json can be given by
-        setting a variable $outputs = [...] listing pairs of output names and the actual output
-        (defaults to [("output", $output)])
-    -->
-    <token name="@GENERATE_GALAXY_JSON@"><![CDATA[
-        #import json
-
-        #try:
-            #silent $outputs[0]
-        #except 
-            #set outputs = [("output", $output)]
-        #end try
-
-        #if $input.ext.startswith("fastq")
-            #set ext = "fastqsanger"
-        #else if $input.ext.startswith("fasta")
-            #set ext = "fasta"
+    <token name="@TAXO_INPUT@"><![CDATA[
+        #if $taxonomy
+            --taxonomy $taxonomy
         #end if
-
-        #try
-            #if $out_format == "fasta"
-                #set ext = "fasta"
-            #else if $out_format == "fastq"
-                #set ext = "fastqsanger"
-            #end if
-        #except
-            #set ext = "fasta"
-        #end try
-
-        #if $input.ext.endswith(".gz")
-            #set ext = ext + ".gz"
-        #end if
-
-        #set gxy_json = {}
-        #for oname, o in $outputs
-            #silent gxy_json[oname] = {"ext": ext}
-        #end for
-        && echo '${json.dumps(gxy_json)}' >> galaxy.json
     ]]></token>
-    
-    <token name="@GENERATE_GALAXY_JSON_OBI4@"><![CDATA[
-        #import json
-
-        #try:
-            #silent $outputs[0]
-        #except 
-            #set outputs = [("output", $output)]
-        #end try
-
-        #if $input.ext.startswith("fastq")
-            #set ext = "fastq"
-        #else if $input.ext.startswith("fasta")
-            #set ext = "fasta"
-        #end if
-
-        #try
-            #if $out_format == "fasta"
-                #set ext = "fasta"
-            #else if $out_format == "fastq"
-                #set ext = "fastq"
-            #end if
-        #except
-            #set ext = "fasta"
-        #end try
-
-        #if $compress_bool
-            #set ext = ext + ".gz"
-        #end if
-
-        #set gxy_json = {}
-        #for oname, o in $outputs
-            #silent gxy_json[oname] = {"ext": ext}
-        #end for
-        && echo '${json.dumps(gxy_json)}' >> galaxy.json
-    ]]></token>
-
 
     <token name="@OUT_FORMAT@"><![CDATA[
-        #if $out_format
-            --${out_format}-output
+        #if str($out_format) in ["fasta.gz", "fastqsolexa.gz","fastqsanger.gz"] or $input.ext.endswith(".gz")
+            --compressed
+        #end if
+        #if str($out_format) in ["fasta", "fasta.gz"]
+            --fasta-output
+        #elif str($out_format) in ["fastq", "fastq.gz"]
+            --fastq-output
         #end if
     ]]></token>
     
     <xml name="out_format_macro">
-        <param name="out_format" type="select" optional="true" label="Output data type" help="For FASTA/Q the the default output type is the same as the input type">
+        <param name="out_format" type="select" optional="true" label="Output data type" help="For FASTA/Q the the default output type is the same as the input type, if you want to decompress the output, select the non compressed version of your format">
             <option value="fasta">fasta</option>
+            <option value="fasta.gz">fasta.gz</option>
             <option value="fastq">fastq</option>
+            <option value="fastq.gz">fastq.gz</option>
         </param>
+    </xml>
+
+    <xml name="change_format_macro">
+        <change_format>
+                <when input="out_format" value="fasta" format="fasta"/>
+                <when input="out_format" value="fastq" format="fastq"/>
+                <when input="out_format" value="fasta.gz" format="fasta.gz"/>
+                <when input="out_format" value="fastq.gz" format="fastq.gz"/>
+        </change_format>
+    </xml>
+
+    <xml name="compress_bool_macro">
+        <param name="compress_bool" type="boolean" truevalue="--compressed" falsevalue="" checked="false" label="Do you want to compress the output file ?"/>
     </xml>
 
     <token name="@OBITOOLS4_IMAGE@">
@@ -212,25 +126,25 @@
                 <option value="mincount">mincount</option>
             </param>
             <when value="sequence">
-                <param name="sequence" type="text" label="Regular expression pattern to be tested against the sequence itself. The pattern is case insensitive." optional="true">
+                <param name="sequence" type="text" label="Regular expression pattern to be tested against the sequence itself. The pattern is case insensitive." optional="false">
                     <expand macro="sanitizer"/>
                 </param>
             </when>
             <when value="definition">
-                <param name="definition" type="text" label="Regular expression pattern to be tested against the definition of the sequence record. The pattern is case sensitive." optional="true">
+                <param name="definition" type="text" label="Regular expression pattern to be tested against the definition of the sequence record. The pattern is case sensitive." optional="false">
                     <expand macro="sanitizer"/>
                 </param>
             </when>
             <when value="identifier">
-                <param name="identifier" type="text" label="Regular expression pattern to be tested against the identifier of the sequence record. The pattern is case sensitive." optional="true">
+                <param name="identifier" type="text" label="Regular expression pattern to be tested against the identifier of the sequence record. The pattern is case sensitive." optional="false">
                     <expand macro="sanitizer"/>
                 </param>
             </when>
             <when value="idlist">
-                <param name="idlist" type="data" format="txt,tabular" label="points to a text file containing the list of sequence record identifiers to be selected. The file format consists in a single identifier per line." optional="true"/>
+                <param name="idlist" type="data" format="txt,tabular" label="points to a text file containing the list of sequence record identifiers to be selected. The file format consists in a single identifier per line." optional="false"/>
             </when>
             <when value="attribute">
-                <param name="attribute" type="text" label="Regular expression pattern matched against the attributes of the sequence record. the value of this attribute is of the form : key=regular_pattern. The pattern is case sensitive." optional="true">
+                <param name="attribute" type="text" label="Regular expression pattern matched against the attributes of the sequence record. the value of this attribute is of the form : key=regular_pattern. The pattern is case sensitive. If a marker is selected below, it take the place of the pattern and you just need to put only the key." optional="false">
                     <expand macro="sanitizer"/>
                 </param>
                 <param name="marker" type="select" label="Select marker" help="Provide a marker to filter the sequence" optional="true">
@@ -239,7 +153,6 @@
                     <option value="16S">16S</option>
                     <option value="18S">18S</option>
                     <option value="28S">28S</option>
-                    <option value="COI">COI</option>
                     <option value="COI-3P">CO1-3P</option>
                     <option value="COI-5P">CO1-5P</option>
                     <option value="COII">COII</option>
@@ -257,26 +170,24 @@
                 </param>
             </when>
             <when value="hasattribute">
-                <param name="hasattribute" type="text" label="Selects sequence records having an attribute who is key." optional="true">
-                    <expand macro="sanitizer"/>
-                </param>
+                <param name="hasattribute" type="text" label="Selects sequence records having an attribute who is key." optional="false"/>
             </when>
             <when value="predicat">
-                <param name="predicat" type="text" optional="true" label="Python boolean expression to be evaluated for each sequence record. The attribute keys defined for each sequence record can be used in the expression as variable names. An extra variable named 'sequence' refers to the sequence record itself. ex: annotations.mode!='join' if you want to keep only the sequences that don't have the mode:join on the annotation line">
+                <param name="predicat" type="text" optional="false" label="Python boolean expression to be evaluated for each sequence record. The attribute keys defined for each sequence record can be used in the expression as variable names. An extra variable named 'sequence' refers to the sequence record itself. ex: annotations.mode!='join' if you want to keep only the sequences that don't have the mode:join on the annotation line">
                     <expand macro="sanitizer"/>
                 </param>
             </when>
             <when value="lmax">
-                <param name="lmax" type="integer" label="lmax" optional="true" help="Keeps sequence records whose sequence length is equal or shorter than lmax"/>
+                <param name="lmax" type="integer" label="lmax" optional="false" help="Keeps sequence records whose sequence length is equal or shorter than lmax"/>
             </when>
             <when value="lmin">
-                <param name="lmin" type="integer" label="lmin" optional="true" help="Keeps sequence records whose sequence length is equal or longer than lmin"/>
+                <param name="lmin" type="integer" label="lmin" optional="false" help="Keeps sequence records whose sequence length is equal or longer than lmin"/>
             </when>
             <when value="maxcount">
-                <param name="maxcount" type="integer" label="maxcount" optional="true" help="Keeps sequence records whose sequence count is equal or shorter than maxcount"/>
+                <param name="maxcount" type="integer" label="maxcount" optional="false" help="Keeps sequence records whose sequence count is equal or shorter than maxcount"/>
             </when>
             <when value="mincount">
-                <param name="mincount" type="integer" label="mincount" optional="true" help="Keeps sequence records whose sequence count is equal or longer than mincount"/>
+                <param name="mincount" type="integer" label="mincount" optional="false" help="Keeps sequence records whose sequence count is equal or longer than mincount"/>
             </when>
         </conditional>
     </xml>
@@ -358,25 +269,8 @@
         <option value="tail_quality">tail_quality</option>
         <option value="taxid">taxid</option>
     </xml>
-
+  
     <xml name="input_format_options_macro">
-        <section name="input_format_options" title="Input format options" expanded="false">
-            <param name="options_inputtype" type="select"  optional="true" label="Specify the input datatype" help="default: determine automatically (should only be necessary for non FASTA/FASTQ datasets)">
-                <option value="--genbank">genbank</option>
-                <option value="--embl">embl</option>
-                <option value="--solexa">solexa</option>
-                <option value="--ecopcr">ecopcr</option>
-                <option value="--ecopcrdb">ecopcrdb</option>
-                <option value="--fasta">fasta (including obitools fasta extentions)</option>
-            </param>
-            <param name="options_seqtype" type="select" optional="true" label="Specify the sequence datatype" >
-                <option value="--nuc">nucleic</option>
-                <option value="--prot">protein</option>
-            </param>
-        </section>
-    </xml>
-    
-    <xml name="input_format_options_macro_OBI4">
         <section name="input_format_options" title="Input format options" expanded="false">
             <param name="options_inputtype" type="select"  optional="true" label="Specify the input datatype" help="default: determine automatically (should only be necessary for non FASTA/FASTQ datasets)">
                 <option value="--genbank">genbank</option>
@@ -398,37 +292,17 @@
             #else if $input.ext.startswith("fastqsolexa")
                 ## input file is in fastq nucleic format produced by solexa sequencer
                 --solexa
-            #else
-                ## input file is in sanger fastq nucleic format (standard fastq)
-                --sanger
-            #end if
-        #end if
-        #if $input_format_options.options_seqtype
-            $input_format_options.options_seqtype
-        #end if
-    ]]></token>
-
-    <token name="@INPUT_FORMAT_OBI4@"><![CDATA[
-        #if $input_format_options.options_inputtype
-            $input_format_options.options_inputtype
-        #else
-            #if $input.ext.startswith("fasta")
-                --fasta
-            #else if $input.ext.startswith("fastqsolexa")
-                ## input file is in fastq nucleic format produced by solexa sequencer
-                --solexa
             #end if
         #end if
     ]]></token>
 
     <xml name="sanitizer">
-        <sanitizer invalid_char="test">
+        <sanitizer>
             <valid initial="default">
-                <!--add value="&quot;"/-->
+                <add value="&quot;"/>  
             </valid>
             <mapping initial="default">
                 <add source="&gt;" target="\&gt;"/>
-                <add source="&quot;" target="\&quot;"/>
             </mapping>
         </sanitizer>
     </xml>

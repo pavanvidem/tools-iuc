@@ -1,62 +1,58 @@
-<tool id="obi_multiplex" name="obimultiplex" version="@TOOL_VERSION_OBI4@" profile="@PROFILE_OBI4@">
+<tool id="obi_multiplex" name="obimultiplex" version="@TOOL_VERSION@" profile="@PROFILE@">
     <description>Assigns sequence records to the corresponding experiment/sample based on DNA tags and primers</description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements_obi4"/>
+    <expand macro="requirements"/>
     <expand macro="stdio"/>
     <command><![CDATA[
         obimultiplex
 
         --no-progressbar
-        -s '$inputextrafile' 
+        -s $inputextrafile
         #if $undentified_bool
             -u unident
         #end if
-        -e '$mismatch'
-        $compress_bool
-        @INPUT_FORMAT_OBI4@
+        -e $mismatch
+        @TAXO_INPUT@
+        @INPUT_FORMAT@
         @OUT_FORMAT@
         $input
         > '$output'
-
-        #if $undentified_bool
-            && mv unident '$unident'
-            #set outputs = [("output", $output), ("unident", $unident)]
-        #end if
-        @GENERATE_GALAXY_JSON_OBI4@
     ]]></command>
     <inputs>
+        <param name="input" type="data" format="@INPUT_FORMATS@" label="Read from file" help="file of Illumina pair-end reads assembled by obipairing"/>
         <param name="inputextrafile" type="data" format="tabular" label="Parameter file" help="extrafile describing the DNA tags and primers sequences used for each sample"/>
-        <param name="input" type="data" format="@INPUT_FORMATS_OBI4@" label="Read from file" help="file of Illumina pair-end reads assembled by illuminapairedend"/>
         <param name="mismatch" type="integer" value="2" label="Number of errors allowed for matching primers (default = 2)"/>
         <param name="undentified_bool" type="boolean" checked="true" label="Do you want to generate a file with unidentified sequences?"/>
-        <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro_OBI4"/>
+        <expand macro="taxo_macro"/>
+        <expand macro="input_format_options_macro"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
-        <data name="unident"  format="auto" label="${tool.name} on ${on_string}: Unassigned sequences">
+        <data name="output" format_source="input" label="${tool.name} on ${on_string}: Trimmed and annotated">
+            <expand macro="change_format_macro"/>
+        </data>
+        <data name="unident" format_source="input" label="${tool.name} on ${on_string}: Unassigned sequences">
+            <expand macro="change_format_macro"/>
             <filter>undentified_bool is True</filter>
         </data>
-        <data name="output"  format="auto" label="${tool.name} on ${on_string}: Trimmed and annotated"/>
     </outputs>
     <tests>
        <test expect_num_outputs="1">
            <param name="inputextrafile" value="input_ngsfilter_extrafile.txt" />
-           <param name="input" value="output_obipairing.fastq" ftype="fastq"/>
+           <param name="input" value="output_obipairing.fastqsanger" ftype="fastqsanger"/>
            <param name="mismatch" value="2" />
            <param name="undentified_bool" value="False" />
-           <output name="output" file="output_obimultiplex.fastq" ftype="fastq"/>
+           <output name="output" file="output_obimultiplex.fastqsanger" ftype="fastqsanger"/>
        </test>
        <test expect_num_outputs="2">
            <param name="inputextrafile" value="input_ngsfilter_extrafile.txt"/>
-           <param name="input" value="output_obipairing_compress.fastq.gz" ftype="fastq.gz"/>
+           <param name="input" value="output_obipairing_compress.fastqsolexa.gz" ftype="fastqsolexa.gz"/>
            <param name="mismatch" value="3"/>
            <param name="undentified_bool" value="True"/>
-           <param name="compress_bool" value="True"/>
-           <output name="output" file="output_obimultiplex_error_3.fastq.gz" ftype="fastq.gz" decompress="True" />
-           <output name="unident" file="output_obimultiplex_unidentified.fastq.gz" ftype="fastq.gz" decompress="True" />
+           <output name="output" file="output_obimultiplex_error_3.fastqsolexa.gz" ftype="fastqsolexa.gz" decompress="True" />
+           <output name="unident" file="output_obimultiplex_unidentified.fastqsolexa.gz" ftype="fastqsolexa.gz" decompress="True" />
        </test>
    </tests>
     <help><![CDATA[

@@ -1,9 +1,9 @@
-<tool id="obi_annotate" name="obiannotate" version="@TOOL_VERSION_OBI4@" profile="@PROFILE_OBI4@">
+<tool id="obi_annotate" name="obiannotate" version="@TOOL_VERSION@" profile="@PROFILE@">
     <description>Adds/Edits sequence record annotations</description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements_obi4"/>
+    <expand macro="requirements"/>
     <expand macro="stdio"/>
     <command><![CDATA[
         obiannotate
@@ -65,16 +65,14 @@
         #if $rankname
             --with-taxon-at-rank='$rankname'
         #end if
-        $compress_bool
-        @INPUT_FORMAT_OBI4@
+        @INPUT_FORMAT@
+        @OUT_FORMAT@
         $input
         > '$output'
-        
-        @GENERATE_GALAXY_JSON_OBI4@
     ]]></command>
 
     <inputs>
-        <param name="input" type="data" format="@INPUT_FORMATS_OBI4@" label="Input sequences file" />
+        <param name="input" type="data" format="@INPUT_FORMATS@" label="Input sequences file" />
         <section name="rename_tag" title="Rename attribute" expanded="False">
             <param name="old_name" type="text" label="old name" optional="true"/>
             <param name="new_name" type="text" label="new name" optional="true"/>
@@ -97,14 +95,16 @@
         <param name="clearbool" type="boolean" label="Clear all attributes associated to the sequence records" truevalue="--clear" falsevalue="" help="Use this option if you want to clear all attributes associated to the sequence records" />
 
         <repeat name="key_selector" title="Keep only attribute with key" min="0">
-            <param name="key" type="text" label="key" optional="true" />
+            <param name="key" type="text" label="key">
+                <validator type="empty_field" message="Please enter a key"/>
+            </param>
         </repeat>
 
-        <param name="length" type="boolean" label="Use the length option?" truevalue="--length" falsevalue="" help="Use this option if you want to add attribute with seq_length as a key and sequence length as a value" />
+        <param name="length" type="boolean" label="Length option" truevalue="--length" falsevalue="" help="Use this option if you want to add attribute with seq_length as a key and sequence length as a value" />
         
         <param name="rankname" type="text" label="Add taxonomic annotation" help="Use this option if you want to add taxonomic annotation at taxonomic rank RANK_NAME"/>
 
-        <param name="aho_corasick" optional="true" type="data" format="txt" label="Adds an aho-corasick attribute with the count of matches of the provided patterns."/>
+        <param name="aho_corasick" optional="true" type="data" format="txt" label="Aho-corasick attribute" help="This option allow for counting the occurrences of a set of patterns stored in a text, one pattern per line."/>
         
         <conditional name="cut_option">
             <param name="cut" type="select" display="radio" label="Use this option to cut a specific part of the sequences">
@@ -128,12 +128,13 @@
             <expand macro="option_grep_macro"/>
         </repeat>
 
-        <expand macro="compress_bool_macro"/>
-        <expand macro="input_format_options_macro_OBI4"/>
+        <expand macro="input_format_options_macro"/>
         <expand macro="out_format_macro"/>
     </inputs>
     <outputs>
-        <data format="auto" name="output"/>
+        <data format_source="input" name="output">
+            <expand macro="change_format_macro"/>
+        </data>
     </outputs>
     <tests>
         <test expect_num_outputs="1">
@@ -149,8 +150,7 @@
             </repeat>
             <param name="clearbool" value="false"/>
             <param name="length" value="false"/>
-
-            <output name="output" file="output_obiannotate.fasta" ftype="fasta"/>
+            <output name="output" file="output_obiannotate.fasta" ftype="fasta" compare="sim_size"/>
         </test>
         <test expect_num_outputs="1">
             <param name="input" value="output_obiuniq_family.fasta.gz" ftype="fasta.gz"/>
@@ -165,8 +165,7 @@
             </repeat>
             <param name="clearbool" value="true"/>
             <param name="length" value="true"/>
-            <param name="compress_bool" value="true"/>
-            <output name="output" file="output_obiannotate.fasta.gz" ftype="fasta.gz" decompress="true"/>
+            <output name="output" file="output_obiannotate.fasta.gz" ftype="fasta.gz" compare="sim_size"/>
         </test>
         <test expect_num_outputs="1">
             <param name="input" value="output_obiuniq.fasta" ftype="fasta"/>
@@ -178,7 +177,6 @@
             </repeat>
             <param name="clearbool" value="true"/>
             <param name="length" value="false"/>
-            <param name="compress_bool" value="false"/>
             <section name="pattern_section">
                 <param name="pattern" value="tagctagc"/>
                 <param name="pattern_name" value="primer1"/>
@@ -187,7 +185,7 @@
                 <param name="cut" value="use_cut"/>
                 <param name="cut_start" value="5"/>
             </conditional>
-            <output name="output" file="output_obiannotate_pattern.fasta" ftype="fasta"/>
+            <output name="output" file="output_obiannotate_pattern.fasta" ftype="fasta" compare="sim_size"/>
         </test>
         <!-- TODO fastq input test -->
     </tests>

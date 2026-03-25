@@ -1,32 +1,31 @@
-<tool id="obi_convert" name="obiconvert" version="@TOOL_VERSION_OBI4@" profile="@PROFILE_OBI4@">
+<tool id="obi_convert" name="obiconvert" version="@TOOL_VERSION@" profile="@PROFILE@">
     <description>converts sequence files to different output formats</description>
     <macros>
         <import>macros.xml</import>
     </macros>
-    <expand macro="requirements_obi4"/>
+    <expand macro="requirements"/>
     <expand macro="stdio"/>
     <command><![CDATA[ 
         obiconvert
         --no-progressbar
-        @INPUT_FORMAT_OBI4@
+        @INPUT_FORMAT@
         @OUT_FORMAT@
-        ${compress_bool}
         $input 
         > '${output}'
-        @GENERATE_GALAXY_JSON_OBI4@
     ]]></command>
     <inputs>
-        <param name="input" type="data" format="@INPUT_FORMATS_OBI4@,txt,tabular" label="Input sequences file" help="database used for the in silico PCR."/>
-        <expand macro="input_format_options_macro_OBI4"/>
+        <param name="input" type="data" format="@INPUT_FORMATS@,txt,tabular" label="Input sequences file" help="database to convert"/>
+        <expand macro="input_format_options_macro"/>
         <expand macro="out_format_macro"/>
-        <expand macro="compress_bool_macro"/>
     </inputs>
     <outputs>
-        <data format="auto" name="output"/>
+        <data name="output" format_source="input">
+            <expand macro="change_format_macro"/>
+        </data>
     </outputs>
     <tests>
-        <test expect_num_outputs="1">
-            <param name="input" value="output_ngsfilter_error_3.fastq.gz"/>
+        <test>
+            <param name="input" value="output_obimultiplex_error_3.fastqsolexa.gz" ftype="fastqsolexa.gz"/>
             <param name="out_format" value="fasta"/>
             <output name="output" file="output_obiconvert.fasta" ftype="fasta"/>
         </test>
