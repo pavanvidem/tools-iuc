@@ -63,7 +63,9 @@ This is useful when you need a list of sample names for downstream tools, or to 
 
 Accepts both simple ``list`` and ``list:paired`` collections. For ``list:paired``, only the top-level pair names are extracted (not ``forward``/``reverse``).
 
-@DIAGRAM@
+.. image:: $PATH_TO_IMAGES/extract_identifiers.png
+  :alt: Extract element identifiers from a collection into a text file
+  :width: 580
 
 ========
 Examples
