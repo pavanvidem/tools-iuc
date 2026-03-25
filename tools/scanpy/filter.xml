@@ -61,7 +61,7 @@ filtered = adata.obs['$method.filter.key']
         #if $method.filter.filter_key.type == 'number'
             #if $method.filter.filter_key.filter == 'equal'
 filtered = filtered == $method.filter.filter_key.value
-            #else if $method.filter.filter_key.filter == 'equal'
+            #else if $method.filter.filter_key.filter == 'not_equal'
 filtered = filtered != $method.filter.filter_key.value
             #else if $method.filter.filter_key.filter == 'less'
 filtered = filtered < $method.filter.filter_key.value
