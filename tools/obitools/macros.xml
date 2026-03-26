@@ -58,7 +58,7 @@
     ]]></token>
 
     <token name="@OUT_FORMAT@"><![CDATA[
-        #if str($out_format) in ["fasta.gz", "fastqsolexa.gz","fastqsanger.gz"] or $input.ext.endswith(".gz")
+        #if str($out_format) in ["fasta.gz", "fastq.gz"] or ($input.ext.endswith(".gz") and str($out_format) not in ["fasta", "fastq"])
             --compressed
         #end if
         #if str($out_format) in ["fasta", "fasta.gz"]
