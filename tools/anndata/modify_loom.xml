@@ -42,7 +42,7 @@ python '$__tool_directory__/tsv_to_loompy.py'
 @CMD_imports@
 #if $operation.to_perform == 'import'
     #if $operation.from.file_type == 'ad'
-adata = ad.read_h5ad('$operation.anndata')
+adata = ad.read_h5ad('$operation.anndata', backed='r')
 adata.write_loom('converted.loom')
     #end if
 #end if
