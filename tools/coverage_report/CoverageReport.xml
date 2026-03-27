@@ -1,4 +1,4 @@
-<tool id="CoverageReport2" name="Panel Coverage Report" version="0.0.5">
+<tool id="CoverageReport2" name="Panel Coverage Report" version="0.0.5+galaxy0" profile="25.0">
     <description>Provide mapping statistics</description>
     <requirements>
       <requirement type="package" version="1.76">perl-number-format</requirement>    
