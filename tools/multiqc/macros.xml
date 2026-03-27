@@ -178,6 +178,12 @@ extra_fn_clean_exts:
                     <param name="input" value="trimmomatic.txt"/>
                 </conditional>
             </repeat>
+            <!-- This is an empty input -->
+            <repeat name="results">
+                <conditional name="software_cond">
+                    <param name="software" value="featureCounts"/>
+                </conditional>
+            </repeat>
             <param name="title" value="Title of the report"/>
             <param name="comment" value="Commment for the report"/>
             <param name="flat" value="true"/>
@@ -194,6 +200,7 @@ extra_fn_clean_exts:
                     <has_text text="Slamdunk"/>
                     <has_text text="sortmerna-detailed-plot"/>
                     <has_text text="trimmomatic_plot"/>
+                    <not_has_text text="featureCounts_assignment_plot"/>
                 </assert_contents>
             </output>
             <output name="stats">
