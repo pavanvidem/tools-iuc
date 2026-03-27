@@ -88,30 +88,36 @@ extra_fn_clean_exts:
     <token name="@LN_FILES@">
         <![CDATA[
         #set file_paths = []
-        #for $file in $repeat.software_cond.input:
-            @ESCAPE_IDENTIFIER@
-            #set file_path = os.path.join($software_dir, str($identifier))
-            @CHECK_LN_FILE@
-        #end for
+        #if str($repeat.software_cond.input) != "None":
+            #for $file in $repeat.software_cond.input:
+                @ESCAPE_IDENTIFIER@
+                #set file_path = os.path.join($software_dir, str($identifier))
+                @CHECK_LN_FILE@
+            #end for
+        #end if
     ]]></token>
     <token name="@LN_2_FILES@">
         <![CDATA[
         #set file_paths = []
         @CREATE_REPEAT_DIR_1@
-        #for $file in $repeat2.input
-            #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
-            #set file_path = os.path.join($repeat_dir, str($identifier))
-            @CHECK_LN_FILE@
-        #end for
+        #if str($repeat2.input) != "None":
+            #for $file in $repeat2.input
+                #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
+                #set file_path = os.path.join($repeat_dir, str($identifier))
+                @CHECK_LN_FILE@
+            #end for
+        #end if
     ]]></token>
     <token name="@LN_3_FILES@">
         <![CDATA[
         #set file_paths = []
-        #for $file in $repeat2.type.input
-            #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
-            #set file_path = os.path.join($repeat_dir, str($identifier))
-            @CHECK_LN_FILE@
-        #end for
+        #if str($repeat2.type.input) != "None":
+            #for $file in $repeat2.type.input
+                #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
+                #set file_path = os.path.join($repeat_dir, str($identifier))
+                @CHECK_LN_FILE@
+            #end for
+        #end if
     ]]></token>
     <!-- is currently not used -->
     <xml name="element_assert" token_name="" token_lines="" token_columns="" token_text="">

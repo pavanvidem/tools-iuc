@@ -5,7 +5,7 @@
     @LN_FILES@
 </token>
     <xml name="trimmomatic_form">
-        <param name="input" type="data" format="txt,tabular,tsv,csv" label="Output of Trimmomatic" help="It should contain 'TTrimmomatic" multiple="true"/>
+        <param name="input" type="data" format="txt,tabular,tsv,csv" label="Output of Trimmomatic" help="It should contain 'TTrimmomatic" multiple="true" optional="true"/>
     </xml>
     <xml name="trimmomatic_test">
         <test expect_num_outputs="3">

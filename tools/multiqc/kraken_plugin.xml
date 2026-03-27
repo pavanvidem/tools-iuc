@@ -4,7 +4,7 @@
         @LN_FILES@
     ]]></token>
     <xml name="kraken_form">
-        <param name="input" type="data" format="tabular" multiple="true" label="Output report of Kraken 1 or 2" />
+        <param name="input" type="data" format="tabular" multiple="true" label="Output report of Kraken 1 or 2" optional="true" />
     </xml>
     <xml name="kraken_test">
         <test expect_num_outputs="3">

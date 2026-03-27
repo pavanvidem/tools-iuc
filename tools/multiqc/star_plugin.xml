@@ -3,17 +3,21 @@
         #for $j, $repeat2 in enumerate( $repeat.software_cond.output )
             @CREATE_REPEAT_DIR_2@
             #if str($repeat2.type.type) == "log"
-                #for $file in $repeat2.type.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_Log.final.out')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.type.input) != "None"
+                    #for $file in $repeat2.type.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_Log.final.out')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #elif str($repeat2.type.type) == "genecounts"
-                #for $file in $repeat2.type.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_ReadsPerGene.out.tab')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.type.input) != "None"
+                    #for $file in $repeat2.type.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_ReadsPerGene.out.tab')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #end if
         #end for
     ]]></token>
@@ -25,10 +29,10 @@
                     <option value="genecounts">Gene counts</option>
                 </param>
                 <when value="log">
-                    <param name="input" type="data" format="txt" label="STAR log output" multiple="true"/>
+                    <param name="input" type="data" format="txt" label="STAR log output" multiple="true" optional="true"/>
                 </when>
                 <when value="genecounts">
-                    <param name="input" type="data" format="tabular,tsv" label="STAR gene count output" multiple="true"/>
+                    <param name="input" type="data" format="tabular,tsv" label="STAR gene count output" multiple="true" optional="true"/>
                 </when>
             </conditional>
         </repeat>

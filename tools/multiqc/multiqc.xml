@@ -207,17 +207,19 @@ mkdir multiqc_WDir &&
         @SAMBAMBA_COMMAND@
     #else if str($repeat.software_cond.software) == "custom_content":
         #set file_paths = []
-        #set $configfile = "T"
-        #for $file in $repeat.software_cond.input
-            @ESCAPE_IDENTIFIER@
-            #set file_path = os.path.join($software_dir, 'file_' + str($i) + '_' + str($identifier))
-            #if $file_path in $file_paths
-                #set $file_path += '_' + str($file_paths.count($file_path))
-            #end if
-            #set $file_paths += [$file_path]
-            ln -s '$file' '$file_path' &&
-            more $file &&
-        #end for
+        #if str($repeat.software_cond.input) != "None"
+            #set $configfile = "T"
+            #for $file in $repeat.software_cond.input
+                @ESCAPE_IDENTIFIER@
+                #set file_path = os.path.join($software_dir, 'file_' + str($i) + '_' + str($identifier))
+                #if $file_path in $file_paths
+                    #set $file_path += '_' + str($file_paths.count($file_path))
+                #end if
+                #set $file_paths += [$file_path]
+                ln -s '$file' '$file_path' &&
+                more $file &&
+            #end for
+        #end if
     #end if
 #end for
 
@@ -515,7 +517,7 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
                     <param argument="description" label="Description" type="text" help="Introductory text to be printed under the section header"/>
                     <param argument="xlab" label="X axis label" type="text"/>
                     <param argument="ylab" label="Y axis label" type="text"/>
-                    <param name="input" type="data" format="tabular,tsv" multiple="true" label="Data files"/>
+                    <param name="input" type="data" format="tabular,tsv" multiple="true" label="Data files" optional="true"/>
                 </when>
             </conditional>
         </repeat>

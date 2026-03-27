@@ -3,35 +3,45 @@
         #for $j, $repeat2 in enumerate( $repeat.software_cond.output )
             @CREATE_REPEAT_DIR_1@
             #if str($repeat2.type) == "align"
-                #for $file in $repeat2.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_SE_report.txt')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.input) != "None"
+                    #for $file in $repeat2.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_SE_report.txt')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #elif str($repeat2.type) == "dedup"
-                #for $file in $repeat2.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_deduplication_report.txt')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.input) != "None"
+                    #for $file in $repeat2.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_deduplication_report.txt')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #elif str($repeat2.type) == "meth_extract"
-                #for $file in $repeat2.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_splitting_report.txt')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.input) != "None"
+                    #for $file in $repeat2.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_splitting_report.txt')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #elif str($repeat2.type) == "m_bias"
-                #for $file in $repeat2.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '_M-bias.txt')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.input) != "None"
+                    #for $file in $repeat2.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '_M-bias.txt')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #elif str($repeat2.type) == "bam2nuc"
-                #for $file in $repeat2.input
-                    @ESCAPE_IDENTIFIER@
-                    #set file_path = os.path.join($repeat_dir, str($identifier) + '.nucleotide_stats.txt')
-                    ln -s '$file' '$file_path' &&
-                #end for
+                #if str($repeat2.input) != "None"
+                    #for $file in $repeat2.input
+                        @ESCAPE_IDENTIFIER@
+                        #set file_path = os.path.join($repeat_dir, str($identifier) + '.nucleotide_stats.txt')
+                        ln -s '$file' '$file_path' &&
+                    #end for
+                #end if
             #end if
         #end for
     ]]></token>
@@ -44,7 +54,7 @@
                 <option value="m_bias">m_bias file</option>
                 <option value="bam2nuc">bam2nuc file</option>
             </param>
-            <param name="input" type="data" format="txt" multiple="true" label="Bismark output"/>
+            <param name="input" type="data" format="txt" multiple="true" label="Bismark output" optional="true"/>
         </repeat>
     </xml>
     <!-- add here your test files and tests, the more stringent the better -->

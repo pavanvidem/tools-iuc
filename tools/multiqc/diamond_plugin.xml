@@ -1,13 +1,15 @@
 <macros>
     <token name="@DIAMOND_COMMAND@"><![CDATA[
-        #for $file in $repeat.software_cond.input
-            @ESCAPE_IDENTIFIER@
-            #set file_path = os.path.join($software_dir, 'diamond.log')
-            ln -s '$file' '$file_path' &&
-        #end for
+        #if str($repeat.software_cond.input) != "None"
+            #for $file in $repeat.software_cond.input
+                @ESCAPE_IDENTIFIER@
+                #set file_path = os.path.join($software_dir, 'diamond.log')
+                ln -s '$file' '$file_path' &&
+            #end for
+        #end if
     ]]></token>
     <xml name="diamond_form">
-        <param name="input" type="data" format="txt" multiple="true" label="Log output of DIAMOND"/>
+        <param name="input" type="data" format="txt" multiple="true" label="Log output of DIAMOND" optional="true"/>
     </xml>
     <xml name="diamond_test">
         <test expect_num_outputs="3">
