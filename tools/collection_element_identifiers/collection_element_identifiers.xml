@@ -1,8 +1,5 @@
 <tool id="collection_element_identifiers" name="Extract element identifiers" version="0.0.3" profile="24.2">
     <description>of a list collection</description>
-    <macros>
-        <import>macros.xml</import>
-    </macros>
     <requirements>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
@@ -107,11 +104,5 @@ Output::
 
     ]]></help>
     <citations>
-        <citation type="bibtex">@misc{galaxyproject_tools_iuc,
-            title={IUC Galaxy Tools},
-            author={{Galaxy IUC}},
-            url={https://github.com/galaxyproject/tools-iuc},
-            note={Galaxy tools maintained by the Intergalactic Utilities Commission}
-        }</citation>
     </citations>
 </tool>
