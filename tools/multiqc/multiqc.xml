@@ -2,6 +2,7 @@
     <description>aggregate results from bioinformatics analyses into a single report</description>
     <macros>
         <import>macros.xml</import>
+        <import>adapterremoval_plugin.xml</import>
         <import>bamtools_plugin.xml</import>
         <import>bcftools_plugin.xml</import>
         <import>bismark_plugin.xml</import>
@@ -33,12 +34,15 @@
         <import>pairtools_plugin.xml</import>
         <import>porechop_plugin.xml</import>
         <import>snippy_plugin.xml</import>
+        <import>sexdeterrmine_plugin.xml</import>
         <import>metaphlan_plugin.xml</import>
         <import>bbduk_plugin.xml</import>
         <import>megahit_plugin.xml</import>
         <import>nonpareil_plugin.xml</import>
         <import>gtdbtk_plugin.xml</import>
         <import>sambamba_plugin.xml</import>
+        <import>preseq_plugin.xml</import>
+        <import>mapdamage_plugin.xml</import>
         <import>image_content_plugin.xml</import>
     </macros>
     <expand macro="bio_tools"/>
@@ -59,7 +63,9 @@ mkdir multiqc_WDir &&
 #for $i, $repeat in enumerate( $results )
     #set software_dir = os.path.join('multiqc_WDir', str($repeat.software_cond.software) + '_' + str($i))
     mkdir $software_dir &&
-    #if str($repeat.software_cond.software) == "bamtools"
+    #if str($repeat.software_cond.software) == "adapterremoval"
+        @ADAPTERREMOVAL_COMMAND@
+	#elif str($repeat.software_cond.software) == "bamtools"
         @BAMTOOLS_COMMAND@
     #elif str($repeat.software_cond.software) == "bcftools"
         @BCFTOOLS_COMMAND@
@@ -140,6 +146,12 @@ mkdir multiqc_WDir &&
         @LN_FILES@
     #elif str($repeat.software_cond.software) == "samtools"
         @SAMTOOLS_COMMAND@
+    #elif str($repeat.software_cond.software) == "sexdeterrmine"
+        @SEXDETERRMINE_COMMAND@
+    #elif str($repeat.software_cond.software) == "preseq"
+        @PRESEQ_COMMAND@
+    #elif str($repeat.software_cond.software) == "mapdamage"
+        @MAPDAMAGE_COMMAND@
     #elif str($repeat.software_cond.software) == "slamdunk"
         #set $pattern = "# slamdunk"
         @LN_FILES@
@@ -241,7 +253,7 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
         <repeat name="results" title="Results" min="1">
             <conditional name="software_cond">
                 <param name="software" type="select" label="Which tool was used generate logs?" help="Software name">
-                    <!--<option value="adapterRemoval">Adapter Removal</option>-->
+                    <option value="adapterremoval">AdapterRemoval</option>
                     <!--<option value="afterqc">AfterQC</option>-->
                     <option value="bamtools">Bamtools</option>
                     <!--<option value="bbmap">BBMap</option>-->
@@ -280,10 +292,10 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
                     <option value="macs2">MACS2</option>
                     <!--<option value="methylQA">methylQA</option>-->
                     <!--<option value="mosdepth">mostdepth</option>-->
-                    <!--<option value="mtnucratio">mtnucratio</option>-->
+                    <option value="mapdamage">mapdamage</option>
                     <!--<option value="peddy">Peddy</option>-->
                     <option value="picard">Picard</option>
-                    <!--<option value="preseq">Preseq</option>-->
+                    <option value="preseq">Preseq</option>
                     <option value="prokka">Prokka</option>
                     <option value="pycoqc">PycoQC</option>
                     <!--<option value="qorts">QoRTs</option>-->
@@ -298,7 +310,7 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
                     <option value="sambamba">Sambamba</option>
                     <!--<option value="sargasso">Sargasso</option>-->
                     <!--<option value="seqyclean">SeqyClean</option>-->
-                    <!--<option value="sexdeterrmine">SexDetErrmine</option>-->
+                    <option value="sexdeterrmine">SexDetErrmine</option>
                     <!--<option value="skewer">Skewer</option>-->
                     <option value="slamdunk">Slamdunk</option>
                     <option value="snpeff">SnpEff</option>
@@ -328,7 +340,10 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
                     <!--Custom-->
                     <option value="custom_content">Custom Content</option>
                 </param>
-                <when value="bamtools">
+                <when value="adapterremoval">
+					<expand macro="adapterremoval_form"/>
+				</when>
+				<when value="bamtools">
                     <expand macro="bamtools_form"/>
                 </when>
                 <when value="bcftools">
@@ -454,6 +469,15 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
                 <when value="snippy">
                     <expand macro="snippy_form"/>
                 </when>
+                <when value="sexdeterrmine">
+                    <expand macro="sexdeterrmine_form"/>
+                </when>
+                <when value="preseq">
+                    <expand macro="preseq_form"/>
+                </when>
+                <when value="mapdamage">
+                    <expand macro="mapdamage_form"/>
+                </when>
                 <when value="metaphlan">
                     <expand macro="metaphlan_form"/>
                 </when>
@@ -570,6 +594,10 @@ cp ./report_data/*plot*.txt ./plots/ | true ## don't fail if no plot files are g
         <expand macro="sambamba_test"/>
         <expand macro="checkm2_test"/>
         <expand macro="sylphtax_test"/>
+        <expand macro="adapterremoval_test"/>
+        <expand macro="mapdamage_test"/>
+        <expand macro="preseq_test"/>
+        <expand macro="sexdeterrmine_test"/>
         <!--expand macro="vcftools_test"/> Does not work, did it ever worked? -->
  
     </tests>
