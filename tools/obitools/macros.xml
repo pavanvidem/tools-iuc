@@ -147,8 +147,7 @@
                 <param name="attribute" type="text" label="Regular expression pattern matched against the attributes of the sequence record. the value of this attribute is of the form : key=regular_pattern. The pattern is case sensitive. If a marker is selected below, it take the place of the pattern and you just need to put only the key." optional="false">
                     <expand macro="sanitizer"/>
                 </param>
-                <param name="marker" type="select" label="Select marker" help="Provide a marker to filter the sequence" optional="true">
-                    <option value="None">Nothing Selected</option>                            
+                <param name="marker" type="select" label="Select marker" help="Provide a marker to filter the sequence" optional="true">                           
                     <option value="12S">12S</option>
                     <option value="16S">16S</option>
                     <option value="18S">18S</option>
