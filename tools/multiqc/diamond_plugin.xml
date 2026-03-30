@@ -1,6 +1,7 @@
 <macros>
     <token name="@DIAMOND_COMMAND@"><![CDATA[
         #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
             #for $file in $repeat.software_cond.input
                 @ESCAPE_IDENTIFIER@
                 #set file_path = os.path.join($software_dir, 'diamond.log')

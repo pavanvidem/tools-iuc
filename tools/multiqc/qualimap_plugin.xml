@@ -1,6 +1,7 @@
 <macros>
     <token name="@QUALIMAP_COMMAND@"><![CDATA[
         #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
             #for $file in $repeat.software_cond.input
                 #if re.search("genome_results", str($file.element_identifier))
                     sample="\$(grep 'bam file = ' $file | sed 's/bam file = //g' | sed 's: ::g')" &&

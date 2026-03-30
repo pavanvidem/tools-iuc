@@ -89,6 +89,7 @@ extra_fn_clean_exts:
         <![CDATA[
         #set file_paths = []
         #if str($repeat.software_cond.input) != "None":
+            #set $at_least_one_input="T"
             #for $file in $repeat.software_cond.input:
                 @ESCAPE_IDENTIFIER@
                 #set file_path = os.path.join($software_dir, str($identifier))
@@ -636,6 +637,17 @@ extra_fn_clean_exts:
                     <has_text text="pycoqc_json"/>
                 </assert_contents>
             </output>
+        </test>
+        <!--Test 07-->
+        <test expect_failure="true">
+            <repeat name="results">
+                <conditional name="software_cond">
+                    <param name="software" value="fastqc"/>
+                    <repeat name="output">
+                        <param name="type" value="data"/>
+                    </repeat>
+                </conditional>
+            </repeat>
         </test>
     </xml>
 </macros>

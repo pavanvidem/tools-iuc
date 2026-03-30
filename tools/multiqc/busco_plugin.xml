@@ -2,6 +2,7 @@
     <token name="@BUSCO_COMMAND@"><![CDATA[
         ## Searches for files "short_summary_[samplename].txt"
         #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
             #for $file in $repeat.software_cond.input
                 @ESCAPE_IDENTIFIER@
                 #set file_path = os.path.join($software_dir, 'short_summary_' + str($identifier))

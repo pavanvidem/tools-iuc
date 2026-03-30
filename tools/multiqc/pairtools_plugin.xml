@@ -3,6 +3,7 @@
         #set $pattern = "total_single_sided_mapped"
         #set file_paths = []
         #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
             #for $file in $repeat.software_cond.input:
                 @ESCAPE_IDENTIFIER@
                 #set file_path = os.path.join($software_dir, str($identifier))
