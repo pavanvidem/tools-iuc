@@ -114,6 +114,7 @@ extra_fn_clean_exts:
         <![CDATA[
         #set file_paths = []
         #if str($repeat2.type.input) != "None":
+            #set $at_least_one_input="T"
             #for $file in $repeat2.type.input
                 #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
                 #set file_path = os.path.join($repeat_dir, str($identifier))

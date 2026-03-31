@@ -4,6 +4,7 @@
             @CREATE_REPEAT_DIR_2@
             #if str($repeat2.type.type) == "relatedness2"
                 #if str($repeat2.type.input) != "None":
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '.relatedness2')
@@ -12,6 +13,7 @@
                 #end if
             #elif str($repeat2.type) == "tstv_by_count"
                 #if str($repeat2.type.input) != "None":
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '.TsTv.count')
@@ -20,6 +22,7 @@
                 #end if
             #elif str($repeat2.type) == "tstv_by_qual"
                 #if str($repeat2.type.input) != "None":
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '.TsTv.qual')
@@ -28,6 +31,7 @@
                 #end if
             #elif str($repeat2.type) == "tstv_summary"
                 #if str($repeat2.type.input) != "None":
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '.TsTv.summary')

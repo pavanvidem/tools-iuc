@@ -4,6 +4,7 @@
             @CREATE_REPEAT_DIR_2@
             #if str($repeat2.type.type) == "log"
                 #if str($repeat2.type.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_Log.final.out')
@@ -12,6 +13,7 @@
                 #end if
             #elif str($repeat2.type.type) == "genecounts"
                 #if str($repeat2.type.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.type.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_ReadsPerGene.out.tab')

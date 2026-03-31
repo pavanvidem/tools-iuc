@@ -5,6 +5,7 @@
             @CREATE_REPEAT_DIR_2@
             #if str($repeat2.type.type) == "meta"
                 #if str($repeat2.type.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $k, $file in enumerate($repeat2.type.input)
                         #set file_dir = os.path.join($repeat_dir, 'file_' + str($k))
                         #set file_path = os.path.join($file_dir, 'meta_info.json')
@@ -14,6 +15,7 @@
                 #end if
             #elif str($repeat2.type.type) == "fld"
                 #if str($repeat2.type.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $k, $file in enumerate($repeat2.type.input)
                         #set file_dir = os.path.join($repeat_dir, 'file_' + str($k))
                         #set file_path = os.path.join($file_dir,'flenDist.txt')
