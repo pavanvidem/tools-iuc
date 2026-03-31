@@ -1,17 +1,14 @@
 <macros>
     <token name="@MAPDAMAGE_COMMAND@"><![CDATA[
+        #set $first_id = re.sub('[^\s\w\-]', '_',str($repeat.software_cond.input[0].element_identifier)).replace(" ", "_").replace(":", "_")
+        mkdir -p '${software_dir}/results_${first_id}' &&
         #for $file in $repeat.software_cond.input:
-            @ESCAPE_IDENTIFIER@
-            #set safe_id = str($identifier).replace(" ", "_").replace(":", "_")
-            
-            mkdir -p '${software_dir}/results_${safe_id}' &&
-            
             if head -n 1 '$file' | grep -qE "^pos[[:space:]]+3p"; then
-                ln -s '$file' '${software_dir}/results_${safe_id}/3pGtoA_freq.txt' ;
+                ln -s '$file' '${software_dir}/results_${first_id}/3pGtoA_freq.txt' ;
             elif head -n 1 '$file' | grep -qE "^pos[[:space:]]+5p"; then
-                ln -s '$file' '${software_dir}/results_${safe_id}/5pCtoT_freq.txt' ;
+                ln -s '$file' '${software_dir}/results_${first_id}/5pCtoT_freq.txt' ;
             elif head -n 5 '$file' | grep -qE "^Std|^\+"; then
-                ln -s '$file' '${software_dir}/results_${safe_id}/lgdistribution.txt' ;
+                ln -s '$file' '${software_dir}/results_${first_id}/lgdistribution.txt' ;
             fi ;
         #end for
     ]]></token>
