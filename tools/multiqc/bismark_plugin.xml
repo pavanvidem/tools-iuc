@@ -4,6 +4,7 @@
             @CREATE_REPEAT_DIR_1@
             #if str($repeat2.type) == "align"
                 #if str($repeat2.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_SE_report.txt')
@@ -12,6 +13,7 @@
                 #end if
             #elif str($repeat2.type) == "dedup"
                 #if str($repeat2.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_deduplication_report.txt')
@@ -20,6 +22,7 @@
                 #end if
             #elif str($repeat2.type) == "meth_extract"
                 #if str($repeat2.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_splitting_report.txt')
@@ -28,6 +31,7 @@
                 #end if
             #elif str($repeat2.type) == "m_bias"
                 #if str($repeat2.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '_M-bias.txt')
@@ -36,6 +40,7 @@
                 #end if
             #elif str($repeat2.type) == "bam2nuc"
                 #if str($repeat2.input) != "None"
+                    #set $at_least_one_input="T"
                     #for $file in $repeat2.input
                         @ESCAPE_IDENTIFIER@
                         #set file_path = os.path.join($repeat_dir, str($identifier) + '.nucleotide_stats.txt')

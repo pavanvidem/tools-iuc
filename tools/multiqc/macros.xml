@@ -102,6 +102,7 @@ extra_fn_clean_exts:
         #set file_paths = []
         @CREATE_REPEAT_DIR_1@
         #if str($repeat2.input) != "None":
+            #set $at_least_one_input="T"
             #for $file in $repeat2.input
                 #set identifier = re.sub('[^\s\w\-]', '_', str($file.element_identifier))
                 #set file_path = os.path.join($repeat_dir, str($identifier))

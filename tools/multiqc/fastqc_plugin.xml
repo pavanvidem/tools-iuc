@@ -4,6 +4,7 @@
         @CREATE_REPEAT_DIR_1@
         #if str($repeat2.type) == "data"
             #if str($repeat2.input) != "None"
+                #set $at_least_one_input="T"
                 #for $k, $file in enumerate($repeat2.input)
                     #set file_dir = os.path.join($repeat_dir, 'file_' + str($k))
                     #set file_path = os.path.join($file_dir, 'fastqc_data.txt')
@@ -13,6 +14,7 @@
             #end if
         #elif str($repeat2.type) == "theoretical_gc"
             #if str($repeat2.input) != "None"
+                #set $at_least_one_input="T"
                 #for $file in $repeat2.input
                     @ESCAPE_IDENTIFIER@
                     #set file_path = os.path.join($repeat_dir, str($identifier) + '_fastqc_theoretical_gc')
