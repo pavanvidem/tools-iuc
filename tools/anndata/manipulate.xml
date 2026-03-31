@@ -928,7 +928,7 @@ This tool takes an AnnData dataset, manipulates it and returns it.
 
 The possible manipulations are:
 
-- Concatenate along the observations axis (`concatenate method <https://anndata.readthedocs.io/en/latest/generated/anndata.AnnData.concatenate.html>`__)
+- Concatenate along the observations axis (`concatenate method <https://anndata.readthedocs.io/en/stable/generated/anndata.AnnData.concatenate.html>`__)
 
     The `uns`, `varm` and `obsm` attributes are ignored.
 
