@@ -673,7 +673,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="&quot;label&quot;: &quot;DAPI&quot;"/>
                     </has_archive_member>
@@ -695,7 +695,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </conditional>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/1_image"/>
                     </has_archive_member>
@@ -716,7 +716,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/Galaxy_image"/>
                     </has_archive_member>
@@ -735,7 +735,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/input_image"/>
                     </has_archive_member>
@@ -761,7 +761,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/Test_Visium_full_image"/>
                     </has_archive_member>
@@ -823,7 +823,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                     </has_archive_member>
                 </assert_contents>
@@ -852,7 +852,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/morphology_focus"/>
                     </has_archive_member>
@@ -884,7 +884,7 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
             </assert_stdout>
             <output name="spatialdata_output">
                 <assert_contents>
-                    <has_archive_member path="spatialdata/zarr.json">
+                    <has_archive_member path="spatialdata.zarr/zarr.json">
                         <has_text text="&quot;zarr_format&quot;: 3"/>
                         <has_text text="images/morphology_focus"/>
                     </has_archive_member>
