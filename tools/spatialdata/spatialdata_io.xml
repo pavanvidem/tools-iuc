@@ -663,8 +663,18 @@ spdata.write("./output/spatialdata.zarr", overwrite=True)
                 <param name="mosaic_images" location="https://zenodo.org/records/18746346/files/mosaic_Cellbound1_z2.tif,https://zenodo.org/records/18746346/files/mosaic_Cellbound1_z3.tif,https://zenodo.org/records/18746346/files/mosaic_Cellbound2_z2.tif,https://zenodo.org/records/18746346/files/mosaic_Cellbound2_z3.tif,https://zenodo.org/records/18746346/files/mosaic_Cellbound3_z2.tif,https://zenodo.org/records/18746346/files/mosaic_Cellbound3_z3.tif,https://zenodo.org/records/18746346/files/mosaic_DAPI_z2.tif,https://zenodo.org/records/18746346/files/mosaic_DAPI_z3.tif,https://zenodo.org/records/18746346/files/mosaic_PolyT_z2.tif,https://zenodo.org/records/18746346/files/mosaic_PolyT_z3.tif"/>
                 <param name="z_layers" value="3"/>
                 <param name="input_micron_to_mosaic" location="https://zenodo.org/records/18746346/files/merscope_micron_to_mosaic_pixel_transform.csv"/>
-                <param name="vpt_output" location="https://zenodo.org/records/18746346/files/merscope_cell_by_gene.csv,https://zenodo.org/records/18746346/files/merscope_cell_metadata.csv,https://zenodo.org/records/18746346/files/merscope_detected_transcripts.csv"/>
-                <param name="cells_boundaries" location="https://zenodo.org/records/18746346/files/merscope_cellpose2_micron_space.parquet"/>
+                <param name="cells_boundaries">
+                    <collection type="list">
+                        <element name="cellpose2_micron_space" location="https://zenodo.org/records/18746346/files/merscope_cellpose2_micron_space.parquet"/>
+                    </collection>
+                </param>
+                <param name="vpt_output">
+                    <collection type="list">
+                        <element name="cell_by_gene" location="https://zenodo.org/records/18746346/files/merscope_cell_by_gene.csv"/>
+                        <element name="cell_metadata" location="https://zenodo.org/records/18746346/files/merscope_cell_metadata.csv"/>
+                        <element name="detected_transcripts" location="https://zenodo.org/records/18746346/files/merscope_detected_transcripts.csv"/>
+                    </collection>
+                </param>
             </conditional>
             <assert_stdout>
                 <has_text text="z_layers=[3]"/>
