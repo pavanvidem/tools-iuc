@@ -554,7 +554,7 @@
     ]]>
     </token>
     <token name="@CMD_READ_INPUTS@"><![CDATA[
-adata = sc.read_h5ad('anndata.h5ad')
+adata = sc.read_h5ad('anndata.h5ad', backed='r')
     ]]>
     </token>
     <!-- ln -s doesn't work here because the output is overwritten to the same file -->
