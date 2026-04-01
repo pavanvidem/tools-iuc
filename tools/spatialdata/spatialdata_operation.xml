@@ -11,15 +11,15 @@
 
         ## Rename directory to spatialdata if it has a different name
         dir_name=\$(ls -d input/*/ | head -1 | xargs basename) &&
-        if [ "\$dir_name" != "spatialdata" ]; then
-            mv "input/\$dir_name" input/spatialdata;
+        if [ "\$dir_name" != "spatialdata.zarr" ]; then
+            mv "input/\$dir_name" input/spatialdata.zarr;
         fi &&
 
         ## run the operation pipeline
         cat 'spdata_operation.py' &&
         python3 'spdata_operation.py'
         #if $operation_condi.operation in ['bounding_box_query', 'polygon_query', 'concatenate', 'transform', 'aggregate', 'to_circles', 'to_polygons', 'get_centroids', 'join_spatialelement_table', 'match_element_to_table', 'match_table_to_element', 'match_sdata_to_table', 'filter_by_table_query', 'rasterize', 'rasterize_bins', 'rasterize_bins_link_table_to_labels', 'map_raster', 'unpad_raster', 'relabel_sequential', 'sanitize_table', 'import_table', 'add_shape']:
-            && cd output && zip -r ../spatialdata.spatialdata.zip spatialdata/ && cd ..
+            && cd output && zip -r ../spatialdata.spatialdata.zip spatialdata.zarr/ && cd ..
         #end if
     ]]></command>
     <configfiles>
@@ -27,7 +27,7 @@
 import spatialdata as sd
 
 ## Load the SpatialData object
-sdata = sd.read_zarr("./input/spatialdata")
+sdata = sd.read_zarr("./input/spatialdata.zarr")
 
 print("Input SpatialData object:")
 print(sdata)
@@ -542,7 +542,7 @@ print(result)
 
 ## Save the result
 #if $operation_condi.operation in ['bounding_box_query', 'polygon_query', 'concatenate', 'transform', 'aggregate', 'to_circles', 'to_polygons', 'get_centroids', 'join_spatialelement_table', 'match_element_to_table', 'match_table_to_element', 'match_sdata_to_table', 'filter_by_table_query', 'rasterize', 'rasterize_bins', 'rasterize_bins_link_table_to_labels', 'map_raster', 'unpad_raster', 'relabel_sequential', 'sanitize_table', 'import_table', 'add_shape']:
-result.write("./output/spatialdata", overwrite=True)
+result.write("./output/spatialdata.zarr", overwrite=True)
 
 #else if $operation_condi.operation in ['get_values']:
 import pandas as pd

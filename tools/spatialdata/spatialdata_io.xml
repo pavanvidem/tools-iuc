@@ -231,7 +231,7 @@
         cat 'spdata_io.py' &&
         python3 'spdata_io.py' &&
         ## zip the output spatialdata folder
-        cd output && zip -r ../spatialdata.spatialdata.zip spatialdata/ && cd ..
+        cd output && zip -r ../spatialdata.spatialdata.zip spatialdata.zarr/ && cd ..
     ]]></command>
     <configfiles>
         <configfile name="spdata_config" filename="spdata_io.py">
@@ -401,7 +401,7 @@ spdata["he_image"] = xenium_aligned_image(
 #end if
 
 print(spdata)
-spdata.write("./output/spatialdata", overwrite=True)
+spdata.write("./output/spatialdata.zarr", overwrite=True)
         </configfile>
     </configfiles>
     <inputs>
