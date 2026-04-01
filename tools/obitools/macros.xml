@@ -26,14 +26,10 @@
                 -I '${i.options_grep.identifier}'
             #elif str($i.options_grep.options_grep_selector) == 'idlist'
                 --id-list ${i.options_grep.idlist}
+            #elif str($i.options_grep.options_grep_selector) == 'attribute' and str($i.options_grep.attrib_value)
+                -a ${i.options_grep.attribute}=${i.options_grep.attrib_value}
             #elif str($i.options_grep.options_grep_selector) == 'attribute'
-                #if $i.options_grep.marker == 'None'
-                    -a ${i.options_grep.attribute}
-                #else 
-                    -a ${i.options_grep.attribute}=${i.options_grep.marker}
-                #end if
-            #elif str($i.options_grep.options_grep_selector) == 'hasattribute'
-                -A '${i.options_grep.hasattribute}'
+                -A ${i.options_grep.attribute}
             #elif str($i.options_grep.options_grep_selector) == 'predicat'
                 -p '${i.options_grep.predicat}'
             #elif str($i.options_grep.options_grep_selector) == 'lmax'
@@ -118,7 +114,6 @@
                 <option value="identifier">identifier</option>
                 <option value="idlist">idlist</option>
                 <option value="attribute">attribute</option>
-                <option value="hasattribute">hasattribute</option>
                 <option value="predicat">predicat</option>
                 <option value="lmax">lmax</option>
                 <option value="lmin">lmin</option>
@@ -144,32 +139,12 @@
                 <param name="idlist" type="data" format="txt,tabular" label="points to a text file containing the list of sequence record identifiers to be selected. The file format consists in a single identifier per line." optional="false"/>
             </when>
             <when value="attribute">
-                <param name="attribute" type="text" label="Regular expression pattern matched against the attributes of the sequence record. the value of this attribute is of the form : key=regular_pattern. The pattern is case sensitive. If a marker is selected below, it take the place of the pattern and you just need to put only the key." optional="false">
+                <param name="attribute" type="select" label="Attribute to use as key in key=value." help="Filters sequences that contain the attribute, or match a specific key=value if a value is provided." optional="false">
+                    <expand macro="attributes"/>
+                </param>
+                <param name="attrib_value" type="text" label="Value to filter on in key=value" help="Supports substring and regular expression matches." optional="true">
                     <expand macro="sanitizer"/>
                 </param>
-                <param name="marker" type="select" label="Select marker" help="Provide a marker to filter the sequence" optional="true">                           
-                    <option value="12S">12S</option>
-                    <option value="16S">16S</option>
-                    <option value="18S">18S</option>
-                    <option value="28S">28S</option>
-                    <option value="COI-3P">CO1-3P</option>
-                    <option value="COI-5P">CO1-5P</option>
-                    <option value="COII">COII</option>
-                    <option value="COXIII">COXIII</option>
-                    <option value="CYTB">Cytb</option>
-                    <option value="H3">H3</option>
-                    <option value="ND1">ND1</option>
-                    <option value="ND2">ND2</option>
-                    <option value="ND3">ND3</option>
-                    <option value="ND4">ND4</option>
-                    <option value="ND4L">ND4L</option>
-                    <option value="ND5-0">ND5-0</option>
-                    <option value="ND6">ND6</option>
-                    <option value="rbcl">rbcl</option>
-                </param>
-            </when>
-            <when value="hasattribute">
-                <param name="hasattribute" type="text" label="Selects sequence records having an attribute who is key." optional="false"/>
             </when>
             <when value="predicat">
                 <param name="predicat" type="text" optional="false" label="Python boolean expression to be evaluated for each sequence record. The attribute keys defined for each sequence record can be used in the expression as variable names. An extra variable named 'sequence' refers to the sequence record itself. ex: annotations.mode!='join' if you want to keep only the sequences that don't have the mode:join on the annotation line">
@@ -218,7 +193,7 @@
         <option value="head_quality">head_quality</option>
         <option value="id_status">id_status</option>
         <option value="merged_star">merged_star</option>
-        <option value="merged">merged</option>
+        <option value="merged_sample">merged_sample</option>
         <option value="mid_quality">mid_quality</option>
         <option value="mode">mode</option>
         <option value="obiclean_cluster">obiclean_cluster</option>
@@ -229,10 +204,20 @@
         <option value="obiclean_samplecount">obiclean_samplecount</option>
         <option value="obiclean_singletoncount">obiclean_singletoncount</option>
         <option value="obiclean_status">obiclean_status</option>
+        <option value="obimultiplex_amplicon_rank">obimultiplex_amplicon_rank</option>
+        <option value="obimultiplex_forward_matching">obimultiplex_forward_matching</option>
+        <option value="obimultiplex_forward_primer">obimultiplex_forward_primer</option>
+        <option value="obimultiplex_forward_tag_dist">obimultiplex_forward_tag_dist</option>
+        <option value="obimultiplex_reverse_matching">obimultiplex_reverse_matching</option>
+        <option value="obimultiplex_reverse_primer">obimultiplex_reverse_primer</option>
+        <option value="obimultiplex_reverse_tag_dist">obimultiplex_reverse_tag_dist</option>
         <option value="occurrence">occurrence</option>
         <option value="order">order</option>
         <option value="order_name">order_name</option>
         <option value="pairend_limit ">pairend_limit </option>
+        <option value="pairing_fast_count">pairing_fast_count</option>
+        <option value="pairing_fast_overlap">pairing_fast_overlap</option>
+        <option value="pairing_fast_score">pairing_fast_score</option>
         <option value="partial ">partial </option>
         <option value="rank">rank</option>
         <option value="reverse_error">reverse_error</option>
@@ -298,7 +283,11 @@
     <xml name="sanitizer">
         <sanitizer>
             <valid initial="default">
-                <add value="&quot;"/>  
+                <add value="&quot;"/>
+                <add value="["/>
+                <add value="]"/>
+                <add value="{"/> 
+                <add value="}"/>  
             </valid>
             <mapping initial="default">
                 <add source="&gt;" target="\&gt;"/>

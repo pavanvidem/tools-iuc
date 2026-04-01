@@ -68,7 +68,8 @@
             <repeat name="repeat_obigrep">
                 <conditional name="options_grep">
                     <param name="options_grep_selector" value="attribute"/>
-                    <param name="attribute" value='merged_sample="26a_F040644"'/>
+                    <param name="attribute" value='merged_sample'/>
+                    <param name="attrib_value" value="26a_F040644"/>
                 </conditional>
             </repeat>
             <param name="v" value="false"/>
