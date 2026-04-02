@@ -1,0 +1,34 @@
+<macros>
+    <token name="@ADAPTERREMOVAL_COMMAND@"><![CDATA[
+        #set $pattern = "AdapterRemoval ver"
+        #set file_path_list = []
+        #for $file in $repeat.software_cond.input:
+            @ESCAPE_IDENTIFIER@
+            #set file_path = os.path.join($software_dir, str($identifier) + '.settings')
+            grep -Pq '$pattern' $file || die "Module '${repeat.software_cond.software}: '$pattern' not found in the file '$identifier'" &&
+            ln -s '$file' '$file_path' &&
+        #end for
+    ]]></token>
+    
+    <xml name="adapterremoval_form">
+        <param name="input" type="data" format="txt,tabular" multiple="true" label="Output settings of AdapterRemoval"/>
+    </xml>
+    
+    <xml name="adapterremoval_test">
+        <test expect_num_outputs="3">
+            <repeat name="results">
+                <conditional name="software_cond">
+                    <param name="software" value="adapterremoval"/>
+                    <param name="input" value="adapterremoval.txt"/>
+                </conditional>
+            </repeat>
+            <param name="title" value="Test Report"/>
+            <param name="export" value="true"/>
+            <output name="html_report">
+                <assert_contents>
+                    <has_text text="AdapterRemoval"/>
+                </assert_contents>
+            </output>
+        </test>
+    </xml>
+</macros>
