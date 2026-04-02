@@ -1,16 +1,19 @@
 <macros>
     <token name="@SEXDETERRMINE_COMMAND@"><![CDATA[
-        #for $file in $repeat.software_cond.input:
-            @ESCAPE_IDENTIFIER@
-            #set safe_id = str($identifier).replace(" ", "_")
-            #set file_path = os.path.join($software_dir, $safe_id + '.sexdeterrmine.json')
-            python -c "import json,sys,os; d=json.load(open(sys.argv[1])); meta=d.pop('Metadata', {'tool_name': 'Sex.DetERRmine'}); k=list(d.keys())[0]; data=d[k]; out={'Metadata': meta, sys.argv[3]: data}; json.dump(out, open(sys.argv[2], 'w'), indent=4)" '$file' '$file_path' '$safe_id' &&
-            cp '$file_path' '${software_dir}/sexdeterrmine.json' &&
-        #end for
+        #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
+            #for $file in $repeat.software_cond.input:
+                @ESCAPE_IDENTIFIER@
+                #set safe_id = str($identifier).replace(" ", "_")
+                #set file_path = os.path.join($software_dir, $safe_id + '.sexdeterrmine.json')
+                python -c "import json,sys,os; d=json.load(open(sys.argv[1])); meta=d.pop('Metadata', {'tool_name': 'Sex.DetERRmine'}); k=list(d.keys())[0]; data=d[k]; out={'Metadata': meta, sys.argv[3]: data}; json.dump(out, open(sys.argv[2], 'w'), indent=4)" '$file' '$file_path' '$safe_id' &&
+                cp '$file_path' '${software_dir}/sexdeterrmine.json' &&
+            #end for
+        #end if
     ]]></token>
 
     <xml name="sexdeterrmine_form">
-        <param name="input" type="data" format="json" multiple="true" label="Output of Sex.DetERRmine (JSON)"/>
+        <param name="input" type="data" format="json" multiple="true" label="Output of Sex.DetERRmine (JSON)" optional="true"/>
     </xml>
     
     <xml name="sexdeterrmine_test">
