@@ -1,18 +1,21 @@
 <macros>
     <token name="@FEATURECOUNTS_COMMAND@"><![CDATA[
-        #for $file in $repeat.software_cond.input
-            @ESCAPE_IDENTIFIER@
-            #set file_prefix = os.path.join($software_dir, str($identifier))
-            if grep -qw Status '$file'; then
-                ln -s '$file' '${file_prefix}.summary';
-            else
-                echo -e 'Status\t${identifier}' > '${file_prefix}.summary';
-                cat '$file' >> '${file_prefix}.summary';
-            fi &&
-        #end for
+        #if str($repeat.software_cond.input) != "None"
+            #set $at_least_one_input="T"
+            #for $file in $repeat.software_cond.input
+                @ESCAPE_IDENTIFIER@
+                #set file_prefix = os.path.join($software_dir, str($identifier))
+                if grep -qw Status '$file'; then
+                    ln -s '$file' '${file_prefix}.summary';
+                else
+                    echo -e 'Status\t${identifier}' > '${file_prefix}.summary';
+                    cat '$file' >> '${file_prefix}.summary';
+                fi &&
+            #end for
+        #end if
     ]]></token>
     <xml name="featurecounts_form">
-        <param name="input" type="data" format="txt,tabular,tsv,csv" multiple="true" label="Output of FeatureCounts"/>
+        <param name="input" type="data" format="txt,tabular,tsv,csv" multiple="true" label="Output of FeatureCounts" optional="true"/>
     </xml>
     <!-- add here your test files and tests, the more stringent the better -->
     <xml name="featurecounts_test">

@@ -16,7 +16,7 @@
                 <option value="varianteval">Variant eval file</option>
                 <option value="base_recalibrator">Base recalibrator file</option>
             </param>
-            <param name="input" type="data" format="txt" multiple="true" label="GATK output"/>
+            <param name="input" type="data" format="txt" multiple="true" label="GATK output" optional="true"/>
         </repeat>
     </xml>
     <!-- add here your test files and tests, the more stringent the better -->

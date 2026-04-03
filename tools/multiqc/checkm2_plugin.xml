@@ -4,7 +4,7 @@
         @LN_FILES@
     ]]></token>
     <xml name="checkm2_form">
-        <param name="input" type="data" format="tabular" multiple="true" label="Output of CheckM2" help="It should be the quality report from CheckM2"/>
+        <param name="input" type="data" format="tabular" multiple="true" label="Output of CheckM2" help="It should be the quality report from CheckM2" optional="true"/>
     </xml>
     <xml name="checkm2_test">
         <test expect_num_outputs="3">

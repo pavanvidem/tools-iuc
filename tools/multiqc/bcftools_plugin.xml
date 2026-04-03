@@ -4,7 +4,7 @@
         @LN_FILES@
     ]]></token>
     <xml name="bcftools_form">
-        <param name="input" type="data" format="txt" multiple="true" label="Output of BCFtools" help="It should contain 'This file was produced by bcftools stats'"/>
+        <param name="input" type="data" format="txt" multiple="true" label="Output of BCFtools" help="It should contain 'This file was produced by bcftools stats'" optional="true"/>
     </xml>
     <!-- add here your test files and tests, the more stringent the better -->
     <xml name="bcftools_test">

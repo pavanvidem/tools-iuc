@@ -52,7 +52,7 @@
                 <option value="rrbs_metrics">RRBS metrics</option>
                 <option value="wgs_metrics">WGS metrics</option>
             </param>
-            <param name="input" type="data" format="txt" multiple="true" label="Picard output"/>
+            <param name="input" type="data" format="txt" multiple="true" label="Picard output" optional="true"/>
         </repeat>
     </xml>
     <xml name="picard_test">

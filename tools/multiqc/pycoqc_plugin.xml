@@ -4,7 +4,7 @@
         @LN_FILES@
     ]]></token>
     <xml name="pycoqc_form">
-        <param name="input" type="data" format="txt,json" multiple="true" label="Output of PycoQC"/>
+        <param name="input" type="data" format="txt,json" multiple="true" label="Output of PycoQC" optional="true"/>
     </xml>
     <!-- add here your test files and tests, the more stringent the better -->
     <xml name="pycoqc_test">
