@@ -171,6 +171,7 @@
         <option value="avg_quality">avg_quality</option>
         <option value="best_match">best_match</option>
         <option value="best_identity">best_identity</option>
+        <option value="chimera">chimera</option>
         <option value="class">class</option>
         <option value="cluster">cluster</option>
         <option value="complemented">complemented</option>

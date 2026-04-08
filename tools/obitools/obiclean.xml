@@ -23,6 +23,7 @@
             -r '$ratio'
         #end if
         ${head}
+        ${detect_chimera}
         #if $save_graph
             --save-graph save_collection/
         #end if

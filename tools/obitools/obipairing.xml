@@ -20,12 +20,16 @@
             --solexa
         #end if
 
-        --exact-mode
         --no-progressbar
         --min-identity='$min_ident'
         --min-overlap='$min_overlap'
 
         ${compress_bool}
+        #if str($alignement_mode) == "exact_mode"
+            --exact-mode
+        #elif str($alignement_mode) == "fast_absolute"
+            --fast-absolute
+        #end if
         -R fastq5p.fastq
         -F fastq3p.fastq
         > '$output'
@@ -36,6 +40,11 @@
         <param name="inputfastq" format="fastqsanger,fastqsanger.gz,fastqsolexa,fastqsolexa.gz" type="data_collection" collection_type="paired" label="Paired reads" help="file of 3p and 5p Illumina pair-end reads to assemble in fastq (sanger or solexa) nucleic format"/>
         <param name="min_ident" type="float" value="0.8" label="minimum score for keeping aligment"/>
         <param name="min_overlap" type="integer" value="10" label="minimum overlap, all the reads shorter than this value will be concatenated instead of aligned"/>
+        <param name="alignement_mode" type="select" display="radio" label="Select a mode of alignement" optional="false">
+            <option value="basic_mode" selected="true">Default</option>
+            <option value="exact_mode">Run an exact alignment algorithm based</option>
+            <option value="fast_absolute">Compute absolute fast score</option> 
+        </param>
         <expand macro="compress_bool_macro"/>
     </inputs>
     <outputs>
@@ -51,6 +60,7 @@
             </param>
             <param name="min_ident" value="0.8"/>
             <param name="min_overlap" value="10"/>
+            <param name="alignement_mode" value="exact_mode"/>
             <output name="output" file="output_obipairing.fastqsanger" ftype="fastqsanger"/>
         </test>
         <test expect_num_outputs="1">
@@ -61,6 +71,7 @@
                 </collection>
             </param>
             <param name="compress_bool" value="true"/>
+            <param name="alignement_mode" value="exact_mode"/>
             <output name="output" file="output_obipairing_compress.fastqsolexa.gz" ftype="fastqsolexa.gz" decompress="true"/>
         </test>
     </tests>
