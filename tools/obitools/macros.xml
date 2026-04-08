@@ -144,6 +144,23 @@
                 </param>
                 <param name="attrib_value" type="text" label="Value to filter on in key=value" help="Supports substring and regular expression matches." optional="true">
                     <expand macro="sanitizer"/>
+                    <option value="12S">12S</option>
+                    <option value="16S">16S</option>
+                    <option value="18S">18S</option>
+                    <option value="28S">28S</option>
+                    <option value="COI">COI</option>
+                    <option value="COII">COII</option>
+                    <option value="COXIII">COXIII</option>
+                    <option value="CYTB">Cytb</option>
+                    <option value="H3">H3</option>
+                    <option value="ND1">ND1</option>
+                    <option value="ND2">ND2</option>
+                    <option value="ND3">ND3</option>
+                    <option value="ND4">ND4</option>
+                    <option value="ND4L">ND4L</option>
+                    <option value="ND5-0">ND5-0</option>
+                    <option value="ND6">ND6</option>
+                    <option value="rbcl">rbcl</option> 
                 </param>
             </when>
             <when value="predicat">
