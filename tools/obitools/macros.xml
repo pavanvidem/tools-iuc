@@ -43,16 +43,6 @@
             #end if
     ]]></token>
 
-    <xml name="taxo_macro">
-        <param name="taxonomy" type="data" format="tgz,tar.gz,tar" label="Taxonomic database" optional="true"/>
-    </xml>
-
-    <token name="@TAXO_INPUT@"><![CDATA[
-        #if $taxonomy
-            --taxonomy '$taxonomy'
-        #end if
-    ]]></token>
-
     <token name="@OUT_FORMAT@"><![CDATA[
         #if str($out_format) in ["fasta.gz", "fastq.gz"] or ($input.ext.endswith(".gz") and str($out_format) not in ["fasta", "fastq"])
             --compressed
