@@ -66,8 +66,6 @@ ecoPCR database format
 
 If no file name is specified, data is read from standard input.
 
-@OBITOOLS4_IMAGE@
-
 @OBITOOLS_LINK_OBI4@
 
     ]]>

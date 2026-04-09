@@ -112,8 +112,6 @@ Sequence record selection options :
 
 * mincount     : Selects sequence records whose sequence count is equal or longer than lmin. ex : 5
 
-@OBITOOLS4_IMAGE@
-
 @OBITOOLS_LINK_OBI4@
 
     </help>

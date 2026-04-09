@@ -97,8 +97,6 @@
 
     \*  For each attribute specified by the -m option, a new attribute whose key is prefixed by merged is created. These new attributes contain the number of times each value occurs within the group of sequence records.
 
-    @OBITOOLS4_IMAGE@
-
     @OBITOOLS_LINK_OBI4@
     ]]>
     

@@ -110,8 +110,6 @@ By default, tagging is done once for the whole dataset, but it can also be done 
 
 Finally, each sequence record is annotated with three new attributes head, internal and singleton. The attribute values are the numbers of samples in which the sequence record has been classified in this manner.
 
-@OBITOOLS4_IMAGE@
-
 @OBITOOLS_LINK_OBI4@
 
         ]]>
