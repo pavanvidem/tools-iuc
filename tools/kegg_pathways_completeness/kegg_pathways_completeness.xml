@@ -41,7 +41,7 @@
                 <param argument="-l" label="Input list" type="data" format="txt"/>
             </when>
         </conditional>
-        <param argument="-t" type="data" format="tsv" label="Modules table" optional="true" help="Provide a custom KEGG modules table. For table structure see help section"/>
+        <param argument="-t" type="data" format="tabular,tsv" label="Modules table" optional="true" help="Provide a custom KEGG modules table. For table structure see help section"/>
         <param argument="-w" type="boolean" truevalue="-w" falsevalue="" checked="false" label="Add weights for each KO in output"/>
         <param argument="-p" type="boolean" truevalue="-p" falsevalue="" checked="false" label="Create images with pathways completeness"/>
     </inputs>
